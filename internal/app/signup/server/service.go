@@ -1,11 +1,17 @@
+/*
+ * Copyright (C)  2018 Nalej - All Rights Reserved
+ */
+
 package server
 
 import (
 	"fmt"
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-organization-go"
+	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-user-manager-go"
 	"github.com/nalej/grpc-utils/pkg/tools"
+	"github.com/nalej/signup/internal/app/signup/server/signup"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -43,6 +49,7 @@ func (s * Service) GetClients() (* Clients, derrors.Error) {
 
 	oClient := grpc_organization_go.NewOrganizationsClient(smConn)
 	uClient := grpc_user_manager_go.NewUserManagerClient(uConn)
+	log.Debug().Str("smConn", smConn.GetState().String()).Str("uConn", uConn.GetState().String()).Msg("connections have been created")
 
 	return &Clients{oClient, uClient}, nil
 }
@@ -60,7 +67,7 @@ func (s *Service) Run() error {
 }
 
 func (s * Service) LaunchGRPC() error {
-	_, cErr := s.GetClients()
+	clients, cErr := s.GetClients()
 	if cErr != nil{
 		log.Fatal().Str("err", cErr.DebugReport()).Msg("cannot generate clients")
 		return cErr
@@ -70,7 +77,11 @@ func (s * Service) LaunchGRPC() error {
 		log.Fatal().Errs("failed to listen: %v", []error{err})
 	}
 
+	manager := signup.NewManager(clients.orgClient, clients.userClient)
+	handler := signup.NewHandler(manager)
+
 	grpcServer := grpc.NewServer()
+	grpc_signup_go.RegisterSignupServer(grpcServer, handler)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcServer)

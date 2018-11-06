@@ -9,7 +9,7 @@ metadata:
     cluster: management
     component: signup
   name: signup
-  namespace: default
+  namespace: nalej
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -30,6 +30,8 @@ spec:
         args:
         - "run"
         - "--debug"
+        - "--systemModelAddress=system-model.nalej:8800"
+        - "--userManagerAddress=user-manager.nalej:8920"
         securityContext:
           runAsUser: 2000
       imagePullSecrets:

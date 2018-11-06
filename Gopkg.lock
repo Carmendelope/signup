@@ -33,55 +33,66 @@
   version = "v2.0.0"
 
 [[projects]]
-  digest = "1:8084197008d6a183b1f94224d5af629aa9835ea5d383efe9efd838259868c4d3"
+  digest = "1:0826248ce462419e9144445b9cd1dcf7abebbea7f3b5a4a4169efb9bc914f927"
   name = "github.com/nalej/grpc-authx-go"
   packages = ["."]
   pruneopts = ""
-  revision = "cf1f868c6392ef91229187b0f812691262fbb4ae"
-  version = "v0.0.15"
+  revision = "0b55296344d780ef5aa88943c987734d89f5bef6"
+  version = "v0.0.16"
 
 [[projects]]
-  digest = "1:4aff9f30822c5659a71f6584cb68e6b23b1b311aaf4ee69d09a9c32ba26ba06a"
+  digest = "1:ad5aaa4ee6fb1817a899d0a2d0c9dfe6b84aad7b7b7d80ec8278b6872c3c898e"
   name = "github.com/nalej/grpc-common-go"
   packages = ["."]
   pruneopts = ""
-  revision = "b9985a8c78b2a7d3070fba2de628bbe55f79156c"
-  version = "v0.0.10"
+  revision = "15d1e726cd46e61e0274444dca89dddf1c5b144c"
+  version = "v0.0.11"
 
 [[projects]]
-  digest = "1:b054e2db87719a690261a562b77fb72935f0f263cb1f3aefd76652250e402352"
+  digest = "1:db9d368ab8ba8b6f1388a734966636f1d91df3a99aaf621599b965ee810758fe"
   name = "github.com/nalej/grpc-organization-go"
   packages = ["."]
   pruneopts = ""
-  revision = "4fee32f30d0bdad685fc24e78402b75dcfe1c0df"
-  version = "v0.0.9"
+  revision = "8bcb4536c3d0e1c6fbbf911c845ab45bf8236d4e"
+  version = "v0.0.10"
 
 [[projects]]
-  digest = "1:96af7b7954b47200eb8b622b7c9eaa42c5b80ac71363603215a10bfe0ec7c1b4"
+  digest = "1:2a1b4cf5d1766299be983e3f6642b44bb0cdf9fd2948e1adea46972145e319a0"
+  name = "github.com/nalej/grpc-signup-go"
+  packages = ["."]
+  pruneopts = ""
+  revision = "15552b21511c9438c3a0afb9d81746cfb7cb360d"
+  version = "v0.0.1"
+
+[[projects]]
+  digest = "1:35587d294beb57652287b416025a1b396c9b9601d04ebad60ff6cc7e562db063"
   name = "github.com/nalej/grpc-user-go"
   packages = ["."]
   pruneopts = ""
-  revision = "e1f93d47e977d5a4aba6803a1edcadce35135168"
-  version = "v0.0.7"
+  revision = "a5edf64266930689228ca13a36f0c241128ffbb9"
+  version = "v0.0.8"
 
 [[projects]]
-  digest = "1:38dd4db82e54296fb6e3ee971fdd159c3219ce679b28b526a81e8238b3c75b71"
+  digest = "1:f89f24c55253e03eb10c7687da77db38fcba660a21b18b8afeac1fea0a29d893"
   name = "github.com/nalej/grpc-user-manager-go"
   packages = ["."]
   pruneopts = ""
-  revision = "7ba4a15ff0b62a236e76f8d3ef3660292518d761"
-  version = "v0.0.4"
+  revision = "dbb17f495f3b2c1dfec129c6fc952f23cb2491c5"
+  version = "v0.0.5"
 
 [[projects]]
   digest = "1:05c1a54c80e2d88b6af8f6e3af68ded6ef7f5aea9a28873fb68edc72ea798581"
   name = "github.com/nalej/grpc-utils"
-  packages = ["pkg/tools"]
+  packages = [
+    "pkg/conversions",
+    "pkg/tools",
+  ]
   pruneopts = ""
   revision = "5dd4662c03100806b57763212966a72e0c4b85e5"
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:aed55b9be75ddc9942b4a19c2ca3c43d7c9d3f3c6b1ff372b0728c4df4037e6a"
+  digest = "1:500c6be86030a46ff4b26f0c6b2195b9dc952f62c98cf9f6124a042cdde3ad1a"
   name = "github.com/rs/zerolog"
   packages = [
     ".",
@@ -90,8 +101,8 @@
     "log",
   ]
   pruneopts = ""
-  revision = "77db4b4f350e31be66a57c332acb7721cf9ff9bb"
-  version = "v1.8.0"
+  revision = "e7627a4f73bfd66654c39d79386e5374cc36ffec"
+  version = "v1.10.0"
 
 [[projects]]
   digest = "1:a1403cc8a94b8d7956ee5e9694badef0e7b051af289caad1cf668331e3ffa4f6"
@@ -102,12 +113,12 @@
   version = "v0.0.3"
 
 [[projects]]
-  digest = "1:0a52bcb568386d98f4894575d53ce3e456f56471de6897bb8b9de13c33d9340e"
+  digest = "1:cbaf13cdbfef0e4734ed8a7504f57fe893d471d62a35b982bf6fb3f036449a66"
   name = "github.com/spf13/pflag"
   packages = ["."]
   pruneopts = ""
-  revision = "9a97c102cda95a86cec2345a6f09f55a939babf5"
-  version = "v1.0.2"
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
   branch = "master"
@@ -160,7 +171,10 @@
   branch = "master"
   digest = "1:80aae82eb03dd30038e2002cdbf3dc269bc17bfd170ef5c5a816b224ae29776f"
   name = "google.golang.org/genproto"
-  packages = ["googleapis/rpc/status"]
+  packages = [
+    "googleapis/rpc/errdetails",
+    "googleapis/rpc/status",
+  ]
   pruneopts = ""
   revision = "c830210a61dfaa790e1920f8d0470fc27bc2efbe"
 
@@ -206,8 +220,11 @@
   analyzer-version = 1
   input-imports = [
     "github.com/nalej/derrors",
+    "github.com/nalej/grpc-authx-go",
     "github.com/nalej/grpc-organization-go",
+    "github.com/nalej/grpc-signup-go",
     "github.com/nalej/grpc-user-manager-go",
+    "github.com/nalej/grpc-utils/pkg/conversions",
     "github.com/nalej/grpc-utils/pkg/tools",
     "github.com/rs/zerolog",
     "github.com/rs/zerolog/log",
