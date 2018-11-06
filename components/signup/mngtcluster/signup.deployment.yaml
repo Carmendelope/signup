@@ -1,0 +1,36 @@
+###
+# Signup component
+###
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    cluster: management
+    component: signup
+  name: signup
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      cluster: management
+      component: signup
+  template:
+    metadata:
+      labels:
+        cluster: management
+        component: signup
+    spec:
+      containers:
+      - name: signup
+        image: nalej/signup:VERSION
+        imagePullPolicy: IfNotPresent
+        args:
+        - "run"
+        - "--debug"
+        securityContext:
+          runAsUser: 2000
+      imagePullSecrets:
+      - name: myregistrykey

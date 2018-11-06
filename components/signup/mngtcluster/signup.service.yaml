@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: signup
+  cluster: management
+  namespace: nalej
+spec:
+  selector:
+    cluster: management
+    component: signup
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8180
+    targetPort: 8180
+    nodePort: 32180
