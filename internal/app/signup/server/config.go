@@ -1,7 +1,12 @@
+/*
+ * Copyright (C)  2018 Nalej - All Rights Reserved
+ */
+
 package server
 
 import (
 	"github.com/nalej/derrors"
+	"github.com/nalej/signup/version"
 	"github.com/rs/zerolog/log"
 )
 
@@ -34,6 +39,7 @@ func (conf * Config) Validate() derrors.Error {
 }
 
 func (conf *Config) Print() {
+	log.Info().Str("app", version.AppVersion).Str("commit", version.Commit).Msg("Version")
 	log.Info().Int("port", conf.Port).Msg("gRPC port")
 	log.Info().Int("port", conf.HTTPPort).Msg("HTTP port")
 	log.Info().Str("URL", conf.SystemModelAddress).Msg("System Model")

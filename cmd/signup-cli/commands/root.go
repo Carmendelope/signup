@@ -17,6 +17,8 @@ import (
 var debugLevel bool
 var consoleLogging bool
 
+var signupAddress string
+
 var rootCmd = &cobra.Command{
 	Use:   "signup-cli",
 	Short: "Signup CLI",
@@ -31,6 +33,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.PersistentFlags().BoolVar(&debugLevel, "debug", false, "Set debug level")
 	rootCmd.PersistentFlags().BoolVar(&consoleLogging, "consoleLogging", false, "Pretty print logging")
+	rootCmd.PersistentFlags().StringVar(&signupAddress, "signupAddress", "localhost:8180", "Signup address (host:port)")
 }
 
 func Execute() {

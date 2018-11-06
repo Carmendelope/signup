@@ -2,7 +2,9 @@ kind: Service
 apiVersion: v1
 metadata:
   name: signup
-  cluster: management
+  labels:
+    cluster: management
+    component: signup
   namespace: nalej
 spec:
   selector:
