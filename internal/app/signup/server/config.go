@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+//Config struct to hold the necessary service configuration
 type Config struct {
 	// Port where the gRPC API service will listen requests.
 	Port int
@@ -21,7 +22,8 @@ type Config struct {
 	UserManagerAddress string
 }
 
-func (conf * Config) Validate() derrors.Error {
+//Validate makes the necessary validation in configuration prior to its use
+func (conf *Config) Validate() derrors.Error {
 
 	if conf.Port <= 0 {
 		return derrors.NewInvalidArgumentError("ports must be valid")
@@ -38,6 +40,7 @@ func (conf * Config) Validate() derrors.Error {
 	return nil
 }
 
+//Print outputs the current configuration
 func (conf *Config) Print() {
 	log.Info().Str("app", version.AppVersion).Str("commit", version.Commit).Msg("Version")
 	log.Info().Int("port", conf.Port).Msg("gRPC port")

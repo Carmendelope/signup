@@ -6,6 +6,8 @@ package server
 
 import (
 	"fmt"
+	"net"
+
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-organization-go"
 	"github.com/nalej/grpc-signup-go"
@@ -15,12 +17,12 @@ import (
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"net"
 )
 
+//Service struct to define the gRPC Server and its configuration
 type Service struct {
 	Configuration Config
-	Server * tools.GenericGRPCServer
+	Server        *tools.GenericGRPCServer
 }
 
 // NewService creates a new system model service.
@@ -31,19 +33,21 @@ func NewService(conf Config) *Service {
 	}
 }
 
+//Clients definition
 type Clients struct {
-	orgClient grpc_organization_go.OrganizationsClient
+	orgClient  grpc_organization_go.OrganizationsClient
 	userClient grpc_user_manager_go.UserManagerClient
 }
 
-func (s * Service) GetClients() (* Clients, derrors.Error) {
+//GetClients gets a new instance of Clients with an active client of every type defined
+func (s *Service) GetClients() (*Clients, derrors.Error) {
 	smConn, err := grpc.Dial(s.Configuration.SystemModelAddress, grpc.WithInsecure())
-	if err != nil{
+	if err != nil {
 		return nil, derrors.AsError(err, "cannot create connection with the system model")
 	}
 
 	uConn, err := grpc.Dial(s.Configuration.UserManagerAddress, grpc.WithInsecure())
-	if err != nil{
+	if err != nil {
 		return nil, derrors.AsError(err, "cannot create connection with the user manager")
 	}
 
@@ -57,7 +61,7 @@ func (s * Service) GetClients() (* Clients, derrors.Error) {
 // Run the service, launch the REST service handler.
 func (s *Service) Run() error {
 	vErr := s.Configuration.Validate()
-	if vErr != nil{
+	if vErr != nil {
 		log.Fatal().Str("err", vErr.DebugReport()).Msg("invalid configuration")
 	}
 
@@ -66,9 +70,10 @@ func (s *Service) Run() error {
 	return s.LaunchGRPC()
 }
 
-func (s * Service) LaunchGRPC() error {
+//LaunchGRPC creates the gRPC server, register the necessary handlers and serves it
+func (s *Service) LaunchGRPC() error {
 	clients, cErr := s.GetClients()
-	if cErr != nil{
+	if cErr != nil {
 		log.Fatal().Str("err", cErr.DebugReport()).Msg("cannot generate clients")
 		return cErr
 	}
