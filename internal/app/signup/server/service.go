@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net"
 
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-organization-go"
 	"github.com/nalej/grpc-signup-go"
@@ -85,7 +86,24 @@ func (s *Service) LaunchGRPC() error {
 	manager := signup.NewManager(clients.orgClient, clients.userClient)
 	handler := signup.NewHandler(manager)
 
-	grpcServer := grpc.NewServer()
+	var grpcServer *grpc.Server
+	if s.Configuration.UseTLS {
+		creds, err := s.Configuration.GetTLSConfig()
+		if err != nil {
+			log.Fatal().Str("err", err.DebugReport()).Msg("error getting TLS configuration")
+		}
+		authData := AuthData{
+			ClientSecret: s.Configuration.ClientSecret,
+		}
+
+		grpcServer = grpc.NewServer(
+			grpc.Creds(creds),
+			grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(authData.Authenticate)),
+			grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(authData.Authenticate)),
+		)
+	} else {
+		grpcServer = grpc.NewServer()
+	}
 	grpc_signup_go.RegisterSignupServer(grpcServer, handler)
 
 	// Register reflection service on gRPC server.

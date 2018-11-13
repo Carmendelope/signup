@@ -21,8 +21,8 @@ var signupCmd = &cobra.Command{
 	Long:  `Signup a new organization creating the default roles and first user`,
 	Run: func(cmd *cobra.Command, args []string) {
 		SetupLogging()
-		signupCli, err := cli.NewSignupCli(signupAddress)
-		if err != nil{
+		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath)
+		if err != nil {
 			log.Error().Str("err", err.DebugReport()).Msg("cannot create CLI")
 		}
 		signupCli.SignupOrganization(orgName, ownerEmail, ownerName, ownerPassword)

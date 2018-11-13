@@ -32,7 +32,26 @@ spec:
         - "--debug"
         - "--systemModelAddress=system-model.nalej:8800"
         - "--userManagerAddress=user-manager.nalej:8920"
+        - "--tls"
+        - "--caPath=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        - "--certFilePath=/etc/signup/server/signup.crt"
+        - "--certKeyPath=/etc/signup/server/signup.key"
+        - "--clientSecretPath=/etc/signup/client/secret"
         securityContext:
           runAsUser: 2000
+        volumeMounts:
+        - name: signup-server-tls-volume
+          mountPath: "/etc/signup/server"
+          readOnly: true
+        - name: signup-client-secret-volume
+          mountPath: "/etc/signup/client"
+          readOnly: true
       imagePullSecrets:
       - name: myregistrykey
+      volumes:
+      - name: signup-server-tls-volume
+        secret:
+          secretName: signup-server-tls
+      - name: signup-client-secret-volume
+        secret:
+          secretName: signup-client-secret
