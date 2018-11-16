@@ -18,11 +18,14 @@ var debugLevel bool
 var consoleLogging bool
 
 var signupAddress string
+var caPath string
+var clientCertPath string
+var clientKeyPath string
 
 var rootCmd = &cobra.Command{
-	Use:   "signup-cli",
-	Short: "Signup CLI",
-	Long:  `A command line tool to interact with the signup component`,
+	Use:     "signup-cli",
+	Short:   "Signup CLI",
+	Long:    `A command line tool to interact with the signup component`,
 	Version: "unknown-version",
 	Run: func(cmd *cobra.Command, args []string) {
 		SetupLogging()
@@ -34,8 +37,12 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&debugLevel, "debug", false, "Set debug level")
 	rootCmd.PersistentFlags().BoolVar(&consoleLogging, "consoleLogging", false, "Pretty print logging")
 	rootCmd.PersistentFlags().StringVar(&signupAddress, "signupAddress", "localhost:8180", "Signup address (host:port)")
+	rootCmd.PersistentFlags().StringVar(&caPath, "caPath", "", "CA Certificate to use")
+	rootCmd.PersistentFlags().StringVar(&clientCertPath, "clientCertPath", "", "Client certificate path")
+	rootCmd.PersistentFlags().StringVar(&clientKeyPath, "clientKeyPath", "", "Client certificate key path")
 }
 
+// Execute runs the cli command execution chain
 func Execute() {
 	rootCmd.SetVersionTemplate(version.GetVersionInfo())
 	if err := rootCmd.Execute(); err != nil {

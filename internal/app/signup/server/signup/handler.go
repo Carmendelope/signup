@@ -6,6 +6,7 @@ package signup
 
 import (
 	"context"
+
 	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-utils/pkg/conversions"
 	"github.com/nalej/signup/internal/pkg/entities"
@@ -17,20 +18,20 @@ type Handler struct {
 }
 
 // NewHandler creates a new Handler with a linked manager.
-func NewHandler(manager Manager) *Handler{
+func NewHandler(manager Manager) *Handler {
 	return &Handler{manager}
 }
 
-func (h*Handler) SignupOrganization(ctx context.Context, signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_signup_go.SignupOrganizationResponse, error) {
+func (h *Handler) SignupOrganization(ctx context.Context, signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_signup_go.SignupOrganizationResponse, error) {
 	vErr := entities.ValidSignupOrganizationRequest(signupRequest)
-	if vErr != nil{
+	if vErr != nil {
 		return nil, conversions.ToGRPCError(vErr)
 	}
 	organization, err := h.Manager.SignupOrganization(signupRequest)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return &grpc_signup_go.SignupOrganizationResponse{
-		OrganizationId:       organization.OrganizationId,
+		OrganizationId: organization.OrganizationId,
 	}, nil
 }

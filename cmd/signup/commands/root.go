@@ -18,9 +18,9 @@ var debugLevel bool
 var consoleLogging bool
 
 var rootCmd = &cobra.Command{
-	Use:   "signup",
-	Short: "Sign Up component",
-	Long:  `The Signup component is responsible of creating a new organization`,
+	Use:     "signup",
+	Short:   "Sign Up component",
+	Long:    `The Signup component is responsible of creating a new organization`,
 	Version: "unknown-version",
 
 	Run: func(cmd *cobra.Command, args []string) {
@@ -34,6 +34,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&consoleLogging, "consoleLogging", false, "Pretty print logging")
 }
 
+//Execute runs the root command
 func Execute() {
 	rootCmd.SetVersionTemplate(version.GetVersionInfo())
 	if err := rootCmd.Execute(); err != nil {
