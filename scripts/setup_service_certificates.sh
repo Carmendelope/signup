@@ -10,15 +10,20 @@ function check_cfssl {
 }
 
 function check_yaml_exists {
-	if [ ! -f "../bin/yaml/mngtcluster/signup.service.yaml" ]; then
+	if [ ! -f "./bin/yaml/mngtcluster/signup.service.yaml" ]; then
 		echo "signup.service.yaml not found. Please generate them using \"make\" or \"make yaml\""
 		abort
 	fi
 }
+
 function get_service_cluster_ip {
 	check_yaml_exists
-	service_cluster_ip=$(kubectl get -f ../bin/yaml/mngtcluster/signup.service.yaml -o jsonpath={.spec.clusterIP})
+	service_cluster_ip=$(kubectl get -f ./bin/yaml/mngtcluster/signup.service.yaml -o jsonpath={.spec.clusterIP})
 }
+
+function get_k8s_config_ca_certificate {
+	kubectl config view -o jsonpath='{.clusters[?(@.name=="minikube")].cluster.certificate-authority-data}' --raw | base64 --decode > cluster_ca.crt
+} 
 
 function get_client_secret {
 	read -s -p "Please enter the client secret: " input_secret
@@ -30,7 +35,7 @@ function clear_old_files {
 		echo "WARNING!! This will remove any other certificate created previously."
 		read -p "Do you want to continue? [y/N]: " yn
 		case $yn in
-			[Yy]* ) rm -rf {server.csr,server-key.pem,server.crt,client.csr,client-key.pem,client.crt}; break;;
+			[Yy]* ) rm -rf {server.csr,server-key.pem,server.crt,client.csr,client-key.pem,client.crt,cluster_ca.crt}; break;;
 			[Nn]* ) abort;;
 			* ) abort;;
 		esac
@@ -129,6 +134,7 @@ function create_client_k8s_secret {
 clear
 check_cfssl
 clear_old_files
+get_k8s_config_ca_certificate
 
 # Server certificate
 echo "######################"
@@ -155,6 +161,6 @@ rm -rf client.csr
 echo ""
 echo "SETUP FINISHED!!"
 echo "Now you can use client.crt and client-key.pem to connect to signup service from the CLI."
-echo "Remember to use the CA from Kubernetes. See your kubeconfig for more details"
+echo "The CA is cluster_ca.crt."
 
 exit 0
