@@ -14,9 +14,19 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// DefaultRoles defines the map of roles that will be automatically created by the system by default.
 var DefaultRoles = map[string][]grpc_authx_go.AccessPrimitive{
-	"Owner": []grpc_authx_go.AccessPrimitive{grpc_authx_go.AccessPrimitive_ORG},
-	"Developer" : []grpc_authx_go.AccessPrimitive{grpc_authx_go.AccessPrimitive_RESOURCES, grpc_authx_go.AccessPrimitive_APPS},
+	"Owner": []grpc_authx_go.AccessPrimitive{
+		grpc_authx_go.AccessPrimitive_ORG,
+	},
+	"Operator": []grpc_authx_go.AccessPrimitive{
+		grpc_authx_go.AccessPrimitive_PROFILE,
+		grpc_authx_go.AccessPrimitive_RESOURCES,
+	},
+	"Developer" : []grpc_authx_go.AccessPrimitive{
+		grpc_authx_go.AccessPrimitive_PROFILE,
+		grpc_authx_go.AccessPrimitive_APPS,
+	},
 }
 
 // Manager structure with the required providers for cluster operations.
