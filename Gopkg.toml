@@ -28,19 +28,19 @@
 
 [[constraint]]
     name="github.com/nalej/grpc-organization-go"
-    version="v0.0.8"
+    version="v0.0.15"
 
 [[constraint]]
     name="github.com/nalej/grpc-user-manager-go"
-    version="v0.0.2"
+    version="v0.0.11"
 
 [[constraint]]
     name="github.com/nalej/grpc-signup-go"
-    version="v0.0.1"
+    version="v0.0.6"
 
 [[constraint]]
     name="github.com/nalej/grpc-common-go"
-    version="v0.0.7"
+    version="v0.0.16"
 
 [[constraint]]
     name="github.com/grpc-ecosystem/grpc-gateway"
