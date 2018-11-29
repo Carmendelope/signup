@@ -5,6 +5,13 @@ import (
 	"github.com/nalej/grpc-signup-go"
 )
 
+func ValidOrganizationId(organizationID *grpc_organization_go.OrganizationId) derrors.Error {
+	if organizationID.OrganizationId == "" {
+		return derrors.NewInvalidArgumentError(emptyOrganizationId)
+	}
+	return nil
+}
+
 func ValidSignupOrganizationRequest(signupRequest *grpc_signup_go.SignupOrganizationRequest) derrors.Error {
 	if signupRequest.OrganizationName == "" {
 		return derrors.NewInvalidArgumentError("organization_name must be provided")

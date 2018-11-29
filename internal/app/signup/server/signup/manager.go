@@ -112,3 +112,24 @@ func (m *Manager) createRoles(organizationID string) (*string, error) {
 	}
 	return &ownerRoleID, nil
 }
+
+
+// ListOrganizations returns the list of organizations in the system.
+func (m *Manager) ListOrganizations() (*grpc_signup_go.OrganizationsList, error){
+	panic("implement me")
+}
+// GetOrganizationInfo retrieves the information about an organization.
+func (m *Manager) GetOrganizationInfo(organizationID *grpc_organization_go.OrganizationId) (*grpc_signup_go.OrganizationInfo, error){
+	panic("implement me")
+}
+// DeleteOrganization removes an organization from the system.
+func (m *Manager) RemoveOrganization(organizationID *grpc_organization_go.OrganizationId) error{
+	log.Info().Str("organizationID", organizationID.OrganizationId).Msg("Removing organization")
+	// Undeploy running apps
+	// Delete descriptors
+	// Delete nodes
+	// Delete clusters
+	// Delete users
+	// Delete roles
+	// Delete organization
+}
