@@ -21,13 +21,15 @@ import (
 //SignupCli with necessary data to create a new client
 type SignupCli struct {
 	client grpc_signup_go.SignupClient
+	PresharedSecret string
 }
 
 //NewSignupCli connects to the Signup service send signup requests
-func NewSignupCli(signupAddress string, caPath string, clientCertPath string, clientKeyPath string) (*SignupCli, derrors.Error) {
+func NewSignupCli(signupAddress string, caPath string, clientCertPath string, clientKeyPath string, presharedSecret string) (*SignupCli, derrors.Error) {
 	var sConn *grpc.ClientConn
 	var dErr error
 	if caPath == "" || clientCertPath == "" || clientKeyPath == "" {
+		log.Warn().Msg("Using client without certificates")
 		sConn, dErr = grpc.Dial(signupAddress, grpc.WithInsecure())
 		if dErr != nil {
 			return nil, derrors.AsError(dErr, "cannot create connection with the signup service")
@@ -44,7 +46,7 @@ func NewSignupCli(signupAddress string, caPath string, clientCertPath string, cl
 	}
 
 	c := grpc_signup_go.NewSignupClient(sConn)
-	return &SignupCli{c}, nil
+	return &SignupCli{c, presharedSecret}, nil
 }
 
 //SignupOrganization sends the request to create a new Organization based on the arguments given
@@ -54,6 +56,7 @@ func (s *SignupCli) SignupOrganization(orgName string, ownerEmail string, ownerN
 		OwnerEmail:       ownerEmail,
 		OwnerName:        ownerName,
 		OwnerPassword:    ownerPassword,
+		PresharedSecret: s.PresharedSecret,
 	}
 	response, err := s.client.SignupOrganization(context.Background(), signupRequest)
 	if err != nil {

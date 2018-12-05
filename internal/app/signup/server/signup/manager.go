@@ -45,10 +45,13 @@ var InternalRoles = map[string]bool{
 type Manager struct {
 	OrgClient  grpc_organization_go.OrganizationsClient
 	UserClient grpc_user_manager_go.UserManagerClient
+
 }
 
 // NewManager creates a Manager using a set of providers.
-func NewManager(orgClient grpc_organization_go.OrganizationsClient, userClient grpc_user_manager_go.UserManagerClient) Manager {
+func NewManager(
+	orgClient grpc_organization_go.OrganizationsClient,
+	userClient grpc_user_manager_go.UserManagerClient) Manager {
 	return Manager{orgClient, userClient}
 }
 
@@ -115,12 +118,31 @@ func (m *Manager) createRoles(organizationID string) (*string, error) {
 
 
 // ListOrganizations returns the list of organizations in the system.
-func (m *Manager) ListOrganizations() (*grpc_signup_go.OrganizationsList, error){
+func (m *Manager) ListOrganizations(request *grpc_signup_go.SignupInfoRequest) (*grpc_signup_go.OrganizationsList, error){
 	panic("implement me")
 }
+
 // GetOrganizationInfo retrieves the information about an organization.
 func (m *Manager) GetOrganizationInfo(organizationID *grpc_organization_go.OrganizationId) (*grpc_signup_go.OrganizationInfo, error){
-	panic("implement me")
+	org, err := m.OrgClient.GetOrganization(context.Background(), organizationID)
+	if err != nil{
+		return nil, err
+	}
+
+	users, err := m.UserClient.ListUsers(context.Background(), organizationID)
+	if err != nil{
+		return nil, err
+	}
+
+	return &grpc_signup_go.OrganizationInfo{
+		OrganizationId:       org.OrganizationId,
+		Name:                 org.Name,
+		Created:              org.Created,
+		NumberUsers:          int32(len(users.Users)),
+		NumberClusters:       0,
+		NumberDescriptors:    0,
+		NumberInstances:      0,
+	}, nil
 }
 // DeleteOrganization removes an organization from the system.
 func (m *Manager) RemoveOrganization(organizationID *grpc_organization_go.OrganizationId) error{
@@ -132,4 +154,5 @@ func (m *Manager) RemoveOrganization(organizationID *grpc_organization_go.Organi
 	// Delete users
 	// Delete roles
 	// Delete organization
+	panic("implement me")
 }

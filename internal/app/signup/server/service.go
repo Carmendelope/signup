@@ -84,7 +84,7 @@ func (s *Service) LaunchGRPC() error {
 	}
 
 	manager := signup.NewManager(clients.orgClient, clients.userClient)
-	handler := signup.NewHandler(manager)
+	handler := signup.NewHandler(manager, s.Configuration.UsePresharedSecret, s.Configuration.PresharedSecret)
 
 	var grpcServer *grpc.Server
 	if s.Configuration.UseTLS {
@@ -95,13 +95,14 @@ func (s *Service) LaunchGRPC() error {
 		authData := AuthData{
 			ClientSecret: s.Configuration.ClientSecret,
 		}
-
+		log.Debug().Msg("Creating server with TLS config")
 		grpcServer = grpc.NewServer(
 			grpc.Creds(creds),
 			grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(authData.Authenticate)),
 			grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(authData.Authenticate)),
 		)
 	} else {
+		log.Debug().Msg("Creating server without certs")
 		grpcServer = grpc.NewServer()
 	}
 	grpc_signup_go.RegisterSignupServer(grpcServer, handler)

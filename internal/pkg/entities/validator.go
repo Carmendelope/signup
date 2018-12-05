@@ -2,12 +2,13 @@ package entities
 
 import (
 	"github.com/nalej/derrors"
+	"github.com/nalej/grpc-organization-go"
 	"github.com/nalej/grpc-signup-go"
 )
 
 func ValidOrganizationId(organizationID *grpc_organization_go.OrganizationId) derrors.Error {
 	if organizationID.OrganizationId == "" {
-		return derrors.NewInvalidArgumentError(emptyOrganizationId)
+		return derrors.NewInvalidArgumentError("organization_id must be provided")
 	}
 	return nil
 }
