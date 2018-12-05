@@ -14,6 +14,7 @@ var orgName string
 var ownerEmail string
 var ownerName string
 var ownerPassword string
+var presharedSecret string
 
 var signupCmd = &cobra.Command{
 	Use:   "signup",
@@ -21,7 +22,7 @@ var signupCmd = &cobra.Command{
 	Long:  `Signup a new organization creating the default roles and first user`,
 	Run: func(cmd *cobra.Command, args []string) {
 		SetupLogging()
-		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath)
+		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath, presharedSecret)
 		if err != nil {
 			log.Error().Str("err", err.DebugReport()).Msg("cannot create CLI")
 		}
@@ -34,6 +35,7 @@ func init() {
 	signupCmd.Flags().StringVar(&ownerEmail, "ownerEmail", "", "Email of the organization owner")
 	signupCmd.Flags().StringVar(&ownerName, "ownerName", "", "Name the owner")
 	signupCmd.Flags().StringVar(&ownerPassword, "ownerPassword", "", "Password for the owner account")
+	signupCmd.Flags().StringVar(&presharedSecret, "presharedSecret", "changemeifyouareusingthis", "Value of the preshared secret")
 
 	rootCmd.AddCommand(signupCmd)
 }

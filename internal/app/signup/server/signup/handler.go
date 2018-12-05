@@ -6,6 +6,10 @@ package signup
 
 import (
 	"context"
+	"github.com/nalej/derrors"
+	"github.com/nalej/grpc-common-go"
+	"github.com/nalej/grpc-organization-go"
+	"github.com/rs/zerolog/log"
 
 	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-utils/pkg/conversions"
@@ -15,14 +19,33 @@ import (
 // Handler structure for the cluster requests.
 type Handler struct {
 	Manager Manager
+	CheckPresharedSecret bool
+	PresharedSecret string
 }
 
 // NewHandler creates a new Handler with a linked manager.
-func NewHandler(manager Manager) *Handler {
-	return &Handler{manager}
+func NewHandler(manager Manager, checkPresharedSecret bool, presharedSecret string) *Handler {
+	return &Handler{manager, checkPresharedSecret, presharedSecret}
 }
 
+func (h *Handler) checkPresharedSecret(found string) derrors.Error {
+	if !h.CheckPresharedSecret{
+		return nil
+	}
+	if h.PresharedSecret != found {
+		return derrors.NewPermissionDeniedError("invalid preshared secret")
+	}
+	return nil
+}
+
+// SignupOrganization register a new organization in the system with a new
+// user as the owner.
 func (h *Handler) SignupOrganization(ctx context.Context, signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_signup_go.SignupOrganizationResponse, error) {
+	sErr := h.checkPresharedSecret(signupRequest.PresharedSecret)
+	if sErr != nil{
+		log.Error().Str("trace", conversions.ToDerror(sErr).DebugReport()).Msg("error validating secret")
+		return nil, sErr
+	}
 	vErr := entities.ValidSignupOrganizationRequest(signupRequest)
 	if vErr != nil {
 		return nil, conversions.ToGRPCError(vErr)
@@ -35,3 +58,51 @@ func (h *Handler) SignupOrganization(ctx context.Context, signupRequest *grpc_si
 		OrganizationId: organization.OrganizationId,
 	}, nil
 }
+
+// ListOrganizations returns the list of organizations in the system.
+func (h *Handler) ListOrganizations(ctx context.Context, request *grpc_signup_go.SignupInfoRequest) (*grpc_signup_go.OrganizationsList, error){
+	sErr := h.checkPresharedSecret(request.PresharedSecret)
+	if sErr != nil{
+		log.Error().Str("trace", conversions.ToDerror(sErr).DebugReport()).Msg("error validating secret")
+		return nil, sErr
+	}
+	return h.Manager.ListOrganizations(request)
+}
+
+// GetOrganizationInfo retrieves the information about an organization.
+func (h *Handler) GetOrganizationInfo(ctx context.Context, request *grpc_signup_go.SignupInfoRequest) (*grpc_signup_go.OrganizationInfo, error){
+	sErr := h.checkPresharedSecret(request.PresharedSecret)
+	if sErr != nil{
+		log.Error().Str("trace", conversions.ToDerror(sErr).DebugReport()).Msg("error validating secret")
+		return nil, sErr
+	}
+	organizationID := &grpc_organization_go.OrganizationId{
+		OrganizationId: request.OrganizationId,
+	}
+	vErr := entities.ValidOrganizationId(organizationID)
+	if vErr != nil {
+		return nil, conversions.ToGRPCError(vErr)
+	}
+	return h.Manager.GetOrganizationInfo(organizationID)
+}
+// DeleteOrganization removes an organization from the system.
+func (h *Handler) RemoveOrganization(ctx context.Context, request *grpc_signup_go.SignupInfoRequest) (*grpc_common_go.Success, error){
+	sErr := h.checkPresharedSecret(request.PresharedSecret)
+	if sErr != nil{
+		log.Error().Str("trace", conversions.ToDerror(sErr).DebugReport()).Msg("error validating secret")
+		return nil, sErr
+	}
+	organizationID := &grpc_organization_go.OrganizationId{
+		OrganizationId: request.OrganizationId,
+	}
+	vErr := entities.ValidOrganizationId(organizationID)
+	if vErr != nil {
+		return nil, conversions.ToGRPCError(vErr)
+	}
+	err := h.Manager.RemoveOrganization(organizationID)
+	if err != nil{
+		return nil, err
+	}
+	return &grpc_common_go.Success{}, nil
+}
+

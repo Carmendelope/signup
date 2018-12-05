@@ -32,11 +32,12 @@ spec:
         - "--debug"
         - "--systemModelAddress=system-model.nalej:8800"
         - "--userManagerAddress=user-manager.nalej:8920"
-        - "--tls"
-        - "--caPath=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        - "--certFilePath=/etc/signup/server/signup.crt"
-        - "--certKeyPath=/etc/signup/server/signup.key"
-        - "--clientSecretPath=/etc/signup/client/secret"
+        - "--usePresharedSecret"
+        #- "--tls"
+        #- "--caPath=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        #- "--certFilePath=/etc/signup/server/signup.crt"
+        #- "--certKeyPath=/etc/signup/server/signup.key"
+        #- "--clientSecretPath=/etc/signup/client/secret"
         securityContext:
           runAsUser: 2000
         volumeMounts:

@@ -7,10 +7,9 @@ package server
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"google.golang.org/grpc/credentials"
 	"io/ioutil"
 	"strings"
-
-	"google.golang.org/grpc/credentials"
 
 	"github.com/nalej/derrors"
 	"github.com/nalej/signup/version"
@@ -37,6 +36,9 @@ type Config struct {
 	CertKeyPath string
 	// ClientSecret with the client secret expected in client certificates
 	ClientSecret string
+
+	UsePresharedSecret bool
+	PresharedSecret string
 }
 
 //Validate makes the necessary validation in configuration prior to its use
@@ -57,6 +59,10 @@ func (conf *Config) Validate() derrors.Error {
 		return err
 	}
 
+	if conf.UsePresharedSecret && conf.PresharedSecret == "" {
+		return derrors.NewInvalidArgumentError("preshared secret must be set")
+	}
+
 	return nil
 }
 
@@ -68,10 +74,17 @@ func (conf *Config) Print() {
 	log.Info().Str("URL", conf.SystemModelAddress).Msg("System Model")
 	log.Info().Str("URL", conf.UserManagerAddress).Msg("User Manager")
 	log.Info().Bool("TLS", conf.UseTLS).Msg("TLS Enabled")
-	log.Info().Str("TLS", conf.CertCAPath).Msg("CA Certificate Path")
-	log.Info().Str("TLS", conf.CertFilePath).Msg("Server Certificate Path")
-	log.Info().Str("TLS", conf.CertKeyPath).Msg("Server Certificate Key Path")
-	log.Info().Str("TLS", strings.Repeat("*", len(conf.ClientSecret))).Msg("Client certificate secret")
+	if conf.UseTLS{
+		log.Info().Str("TLS", conf.CertCAPath).Msg("CA Certificate Path")
+		log.Info().Str("TLS", conf.CertFilePath).Msg("Server Certificate Path")
+		log.Info().Str("TLS", conf.CertKeyPath).Msg("Server Certificate Key Path")
+		log.Info().Str("TLS", strings.Repeat("*", len(conf.ClientSecret))).Msg("Client certificate secret")
+	}
+	log.Info().Bool("enabled", conf.UsePresharedSecret).Msg("Use preshared secret")
+	if conf.UsePresharedSecret{
+		log.Info().Str("TLS", strings.Repeat("*", len(conf.PresharedSecret))).Msg("Preshared secret")
+	}
+
 }
 
 func (conf *Config) validateTLS() derrors.Error {
