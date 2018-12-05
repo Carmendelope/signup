@@ -28,7 +28,26 @@ type SignupCli struct {
 func NewSignupCli(signupAddress string, caPath string, clientCertPath string, clientKeyPath string, presharedSecret string) (*SignupCli, derrors.Error) {
 	var sConn *grpc.ClientConn
 	var dErr error
-	if caPath == "" || clientCertPath == "" || clientKeyPath == "" {
+	if caPath != "" && clientCertPath == "" && clientKeyPath == "" {
+		log.Warn().Msg("Using client without CA certificate only")
+		rootCAs := x509.NewCertPool()
+		log.Debug().Str("caCertPath", caPath).Msg("loading CA cert")
+		caCert, err := ioutil.ReadFile(caPath)
+		if err != nil {
+			return nil, derrors.NewInternalError("Error loading CA certificate")
+		}
+		added := rootCAs.AppendCertsFromPEM(caCert)
+		if !added {
+			return nil, derrors.NewInternalError("cannot add CA certificate to the pool")
+		}
+		creds := credentials.NewClientTLSFromCert(rootCAs, "")
+		log.Debug().Interface("creds", creds.Info()).Msg("Secure credentials")
+		sConn, dErr = grpc.Dial(signupAddress, grpc.WithTransportCredentials(creds))
+		if dErr != nil {
+			return nil, derrors.AsError(dErr, "cannot create connection with the signup service")
+		}
+	} else if caPath == "" || clientCertPath == "" || clientKeyPath == "" {
+
 		log.Warn().Msg("Using client without certificates")
 		sConn, dErr = grpc.Dial(signupAddress, grpc.WithInsecure())
 		if dErr != nil {
