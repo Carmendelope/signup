@@ -85,6 +85,7 @@ func (h *Handler) GetOrganizationInfo(ctx context.Context, request *grpc_signup_
 	}
 	return h.Manager.GetOrganizationInfo(organizationID)
 }
+
 // DeleteOrganization removes an organization from the system.
 func (h *Handler) RemoveOrganization(ctx context.Context, request *grpc_signup_go.SignupInfoRequest) (*grpc_common_go.Success, error){
 	sErr := h.checkPresharedSecret(request.PresharedSecret)

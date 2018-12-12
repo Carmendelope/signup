@@ -8,6 +8,8 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 
 	"github.com/nalej/derrors"
@@ -109,4 +111,46 @@ func getTLSConfig(caPath string, clientCertPath string, clientKeyPath string) (c
 	}
 
 	return credentials.NewTLS(tlsConfig), nil
+}
+
+func (s *SignupCli) List() {
+	request := &grpc_signup_go.SignupInfoRequest{
+		PresharedSecret:      s.PresharedSecret,
+	}
+	organizations, err := s.client.ListOrganizations(context.Background(), request)
+	s.PrintResultOrError(organizations, err, "cannot list organizations")
+}
+
+func (s *SignupCli) Info(organizationID string) {
+	request := &grpc_signup_go.SignupInfoRequest{
+		OrganizationId: organizationID,
+		PresharedSecret:      s.PresharedSecret,
+	}
+	info, err := s.client.GetOrganizationInfo(context.Background(), request)
+	s.PrintResultOrError(info, err, "cannot get organization info")
+}
+
+func (s *SignupCli) PrintResultOrError(result interface{}, err error, errMsg string) {
+	if err != nil {
+		log.Fatal().Str("trace", conversions.ToDerror(err).DebugReport()).Msg(errMsg)
+	} else {
+		s.PrintResult(result)
+	}
+}
+
+func (s *SignupCli) PrintSuccessOrError(err error, errMsg string, successMsg string){
+	if err != nil{
+		log.Fatal().Str("trace", conversions.ToDerror(err).DebugReport()).Msg(errMsg)
+	}else{
+		fmt.Println(fmt.Sprintf("{\"msg\":\"%s\"}", successMsg))
+	}
+}
+
+func (s *SignupCli) PrintResult(result interface{}) error {
+	//Print descriptors
+	res, err := json.MarshalIndent(result, "", "  ")
+	if err == nil {
+		fmt.Println(string(res))
+	}
+	return err
 }

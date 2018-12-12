@@ -8,6 +8,7 @@ import (
 	"context"
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-authx-go"
+	"github.com/nalej/grpc-common-go"
 	"github.com/nalej/grpc-organization-go"
 	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-user-manager-go"
@@ -116,24 +117,33 @@ func (m *Manager) createRoles(organizationID string) (*string, error) {
 	return &ownerRoleID, nil
 }
 
-
 // ListOrganizations returns the list of organizations in the system.
 func (m *Manager) ListOrganizations(request *grpc_signup_go.SignupInfoRequest) (*grpc_signup_go.OrganizationsList, error){
-	panic("implement me")
+	orgs, err := m.OrgClient.ListOrganizations(context.Background(), &grpc_common_go.Empty{})
+	if err != nil{
+		return nil, err
+	}
+	result := make([]*grpc_signup_go.OrganizationInfo, 0, len(orgs.Organizations))
+	for _, org := range orgs.Organizations{
+		info, err := m.extendOrganizationInfo(org)
+		if err != nil{
+			return nil, err
+		}
+		result = append(result, info)
+	}
+	return &grpc_signup_go.OrganizationsList{
+		Organizations:        result,
+	}, err
 }
 
-// GetOrganizationInfo retrieves the information about an organization.
-func (m *Manager) GetOrganizationInfo(organizationID *grpc_organization_go.OrganizationId) (*grpc_signup_go.OrganizationInfo, error){
-	org, err := m.OrgClient.GetOrganization(context.Background(), organizationID)
+func (m*Manager) extendOrganizationInfo(org * grpc_organization_go.Organization) (*grpc_signup_go.OrganizationInfo, error){
+	orgID := &grpc_organization_go.OrganizationId{
+		OrganizationId:       org.OrganizationId,
+	}
+	users, err := m.UserClient.ListUsers(context.Background(), orgID)
 	if err != nil{
 		return nil, err
 	}
-
-	users, err := m.UserClient.ListUsers(context.Background(), organizationID)
-	if err != nil{
-		return nil, err
-	}
-
 	return &grpc_signup_go.OrganizationInfo{
 		OrganizationId:       org.OrganizationId,
 		Name:                 org.Name,
@@ -144,6 +154,16 @@ func (m *Manager) GetOrganizationInfo(organizationID *grpc_organization_go.Organ
 		NumberInstances:      0,
 	}, nil
 }
+
+// GetOrganizationInfo retrieves the information about an organization.
+func (m *Manager) GetOrganizationInfo(organizationID *grpc_organization_go.OrganizationId) (*grpc_signup_go.OrganizationInfo, error){
+	org, err := m.OrgClient.GetOrganization(context.Background(), organizationID)
+	if err != nil{
+		return nil, err
+	}
+	return m.extendOrganizationInfo(org)
+}
+
 // DeleteOrganization removes an organization from the system.
 func (m *Manager) RemoveOrganization(organizationID *grpc_organization_go.OrganizationId) error{
 	log.Info().Str("organizationID", organizationID.OrganizationId).Msg("Removing organization")
