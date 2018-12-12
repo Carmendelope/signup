@@ -40,19 +40,19 @@ spec:
         #- "--clientSecretPath=/etc/signup/client/secret"
         securityContext:
           runAsUser: 2000
-        volumeMounts:
-        - name: signup-server-tls-volume
-          mountPath: "/etc/signup/server"
-          readOnly: true
-        - name: signup-client-secret-volume
-          mountPath: "/etc/signup/client"
-          readOnly: true
+        #volumeMounts:
+        #- name: signup-server-tls-volume
+        #  mountPath: "/etc/signup/server"
+        #  readOnly: true
+        #- name: signup-client-secret-volume
+        #  mountPath: "/etc/signup/client"
+        #  readOnly: true
       imagePullSecrets:
       - name: nalej-registry
-      volumes:
-      - name: signup-server-tls-volume
-        secret:
-          secretName: signup-server-tls
-      - name: signup-client-secret-volume
-        secret:
-          secretName: signup-client-secret
+      #volumes:
+      #- name: signup-server-tls-volume
+      #  secret:
+      #    secretName: signup-server-tls
+      #- name: signup-client-secret-volume
+      #  secret:
+      #    secretName: signup-client-secret

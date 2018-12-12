@@ -17,10 +17,7 @@ import (
 var debugLevel bool
 var consoleLogging bool
 
-var signupAddress string
-var caPath string
-var clientCertPath string
-var clientKeyPath string
+
 
 var rootCmd = &cobra.Command{
 	Use:     "signup-cli",
@@ -40,6 +37,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&caPath, "caPath", "", "CA Certificate to use")
 	rootCmd.PersistentFlags().StringVar(&clientCertPath, "clientCertPath", "", "Client certificate path")
 	rootCmd.PersistentFlags().StringVar(&clientKeyPath, "clientKeyPath", "", "Client certificate key path")
+	rootCmd.PersistentFlags().StringVar(&presharedSecret, "presharedSecret", "changemeifyouareusingthis", "Value of the preshared secret")
+
 }
 
 // Execute runs the cli command execution chain
