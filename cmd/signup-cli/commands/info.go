@@ -11,9 +11,9 @@ import (
 )
 
 var infoCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List existing organizations",
-	Long:  `List existing organizations`,
+	Use:   "info",
+	Short: "Obtain the information of an existing organization",
+	Long:  `Obtain the information of an existing organization`,
 	Run: func(cmd *cobra.Command, args []string) {
 		SetupLogging()
 		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath, presharedSecret)

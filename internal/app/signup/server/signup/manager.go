@@ -9,9 +9,11 @@ import (
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-authx-go"
 	"github.com/nalej/grpc-common-go"
+	"github.com/nalej/grpc-application-go"
 	"github.com/nalej/grpc-organization-go"
 	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-user-manager-go"
+	"github.com/nalej/grpc-infrastructure-go"
 	"github.com/nalej/grpc-utils/pkg/conversions"
 	"github.com/rs/zerolog/log"
 )
@@ -46,14 +48,18 @@ var InternalRoles = map[string]bool{
 type Manager struct {
 	OrgClient  grpc_organization_go.OrganizationsClient
 	UserClient grpc_user_manager_go.UserManagerClient
-
+	ClusterClient grpc_infrastructure_go.ClustersClient
+	AppClient grpc_application_go.ApplicationsClient
 }
 
 // NewManager creates a Manager using a set of providers.
 func NewManager(
 	orgClient grpc_organization_go.OrganizationsClient,
-	userClient grpc_user_manager_go.UserManagerClient) Manager {
-	return Manager{orgClient, userClient}
+	userClient grpc_user_manager_go.UserManagerClient,
+	clusterClient grpc_infrastructure_go.ClustersClient,
+	appClient grpc_application_go.ApplicationsClient,
+	) Manager {
+	return Manager{orgClient, userClient, clusterClient, appClient}
 }
 
 func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_organization_go.Organization, error) {
@@ -144,14 +150,26 @@ func (m*Manager) extendOrganizationInfo(org * grpc_organization_go.Organization)
 	if err != nil{
 		return nil, err
 	}
+	clusters, err := m.ClusterClient.ListClusters(context.Background(), orgID)
+	if err != nil{
+		return nil, err
+	}
+	descriptors, err := m.AppClient.ListAppDescriptors(context.Background(), orgID)
+	if err != nil{
+		return nil, err
+	}
+	instances, err := m.AppClient.ListAppInstances(context.Background(), orgID)
+	if err != nil{
+		return nil, err
+	}
 	return &grpc_signup_go.OrganizationInfo{
 		OrganizationId:       org.OrganizationId,
 		Name:                 org.Name,
 		Created:              org.Created,
 		NumberUsers:          int32(len(users.Users)),
-		NumberClusters:       0,
-		NumberDescriptors:    0,
-		NumberInstances:      0,
+		NumberClusters:       int32(len(clusters.Clusters)),
+		NumberDescriptors:    int32(len(descriptors.Descriptors)),
+		NumberInstances:      int32(len(instances.Instances)),
 	}, nil
 }
 

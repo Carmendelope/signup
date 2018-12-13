@@ -6,6 +6,8 @@ package server
 
 import (
 	"fmt"
+	"github.com/nalej/grpc-application-go"
+	"github.com/nalej/grpc-infrastructure-go"
 	"net"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
@@ -38,6 +40,8 @@ func NewService(conf Config) *Service {
 type Clients struct {
 	orgClient  grpc_organization_go.OrganizationsClient
 	userClient grpc_user_manager_go.UserManagerClient
+	clusterClient grpc_infrastructure_go.ClustersClient
+	appClient grpc_application_go.ApplicationsClient
 }
 
 //GetClients gets a new instance of Clients with an active client of every type defined
@@ -54,9 +58,11 @@ func (s *Service) GetClients() (*Clients, derrors.Error) {
 
 	oClient := grpc_organization_go.NewOrganizationsClient(smConn)
 	uClient := grpc_user_manager_go.NewUserManagerClient(uConn)
+	cClient := grpc_infrastructure_go.NewClustersClient(smConn)
+	aClient := grpc_application_go.NewApplicationsClient(smConn)
 	log.Debug().Str("smConn", smConn.GetState().String()).Str("uConn", uConn.GetState().String()).Msg("connections have been created")
 
-	return &Clients{oClient, uClient}, nil
+	return &Clients{oClient, uClient, cClient, aClient}, nil
 }
 
 // Run the service, launch the REST service handler.
@@ -83,7 +89,7 @@ func (s *Service) LaunchGRPC() error {
 		log.Fatal().Errs("failed to listen: %v", []error{err})
 	}
 
-	manager := signup.NewManager(clients.orgClient, clients.userClient)
+	manager := signup.NewManager(clients.orgClient, clients.userClient, clients.clusterClient, clients.appClient)
 	handler := signup.NewHandler(manager, s.Configuration.UsePresharedSecret, s.Configuration.PresharedSecret)
 
 	var grpcServer *grpc.Server
