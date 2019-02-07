@@ -10,9 +10,8 @@ spec:
   selector:
     cluster: management
     component: signup
-  type: NodePort
+  type: ClusterIP
   ports:
   - protocol: TCP
     port: 8180
     targetPort: 8180
-    nodePort: 32180
