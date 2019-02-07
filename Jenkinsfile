@@ -1,7 +1,7 @@
 def slack = new org.daisho.Slack()
 
-def packageName = "app-cluster-api"
-def appsList = "app-cluster-api"
+def packageName = "signup"
+def appsList = "signup signup-cli"
 def packagePath = "src/github.com/nalej/${packageName}"
 
 pipeline {
