@@ -9,7 +9,7 @@ metadata:
     cluster: management
     component: signup
   name: signup
-  namespace: nalej
+  namespace: __NPH_NAMESPACE
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -25,13 +25,13 @@ spec:
     spec:
       containers:
       - name: signup
-        image: nalejregistry.azurecr.io/nalej/signup:VERSION
-        imagePullPolicy: IfNotPresent
+        image: __NPH_REGISTRY.azurecr.io/__NPH_REGISTRY_NAMESPACE/signup:__NPH_VERSION
+        imagePullPolicy: Always
         args:
         - "run"
         - "--debug"
-        - "--systemModelAddress=system-model.nalej:8800"
-        - "--userManagerAddress=user-manager.nalej:8920"
+        - "--systemModelAddress=system-model.__NPH_NAMESPACE:8800"
+        - "--userManagerAddress=user-manager.__NPH_NAMESPACE:8920"
         - "--usePresharedSecret"
         #- "--tls"
         #- "--caPath=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
