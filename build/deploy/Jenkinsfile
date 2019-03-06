@@ -29,8 +29,8 @@ pipeline {
                         waitUntil {
                             script {
                                 def k8sGet = new org.daisho.k8s.Get()
-                                expected = k8sGet.filterByJSONPath(params.namespace, "deployment", "authx", "'{.spec.replicas}'")
-                                ready = k8sGet.filterByJSONPath(params.namespace, "deployment", "authx", "'{.status.readyReplicas}'")
+                                expected = k8sGet.filterByJSONPath(params.namespace, "deployment", "signup", "'{.spec.replicas}'")
+                                ready = k8sGet.filterByJSONPath(params.namespace, "deployment", "signup", "'{.status.readyReplicas}'")
                                 echo "Expected: ${expected}"
                                 echo "Ready: ${ready}"
                                 ok = (ready == expected)
