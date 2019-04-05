@@ -11,4 +11,4 @@ steps:
       branchName: "refs/heads/master"
       artifactName: testing-k8sYAMLfiles
       downloadPath: ${{ parameters.downloadPath }}
-    displayName: Download device-api YAML files
+    displayName: Download signup YAML files
