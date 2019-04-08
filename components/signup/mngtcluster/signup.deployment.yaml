@@ -24,31 +24,31 @@ spec:
         component: signup
     spec:
       containers:
-      - name: signup
-        image: __NPH_REGISTRY.azurecr.io/__NPH_REGISTRY_NAMESPACE/signup:__NPH_VERSION
-        imagePullPolicy: Always
-        args:
-        - "run"
-        - "--debug"
-        - "--systemModelAddress=system-model.__NPH_NAMESPACE:8800"
-        - "--userManagerAddress=user-manager.__NPH_NAMESPACE:8920"
-        - "--usePresharedSecret"
-        #- "--tls"
-        #- "--caPath=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        #- "--certFilePath=/etc/signup/server/signup.crt"
-        #- "--certKeyPath=/etc/signup/server/signup.key"
-        #- "--clientSecretPath=/etc/signup/client/secret"
-        securityContext:
-          runAsUser: 2000
-        #volumeMounts:
-        #- name: signup-server-tls-volume
-        #  mountPath: "/etc/signup/server"
-        #  readOnly: true
-        #- name: signup-client-secret-volume
-        #  mountPath: "/etc/signup/client"
-        #  readOnly: true
+        - name: signup
+          image: __NPH_REGISTRY/__NPH_REGISTRY_NAMESPACE/signup:__NPH_VERSION
+          imagePullPolicy: Always
+          args:
+            - "run"
+            - "--debug"
+            - "--systemModelAddress=system-model.__NPH_NAMESPACE:8800"
+            - "--userManagerAddress=user-manager.__NPH_NAMESPACE:8920"
+            - "--usePresharedSecret"
+          #- "--tls"
+          #- "--caPath=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+          #- "--certFilePath=/etc/signup/server/signup.crt"
+          #- "--certKeyPath=/etc/signup/server/signup.key"
+          #- "--clientSecretPath=/etc/signup/client/secret"
+          securityContext:
+            runAsUser: 2000
+          #volumeMounts:
+          #- name: signup-server-tls-volume
+          #  mountPath: "/etc/signup/server"
+          #  readOnly: true
+          #- name: signup-client-secret-volume
+          #  mountPath: "/etc/signup/client"
+          #  readOnly: true
       imagePullSecrets:
-      - name: nalej-registry
+        - name: nalej-registry
       #volumes:
       #- name: signup-server-tls-volume
       #  secret:
