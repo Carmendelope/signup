@@ -1,12 +1,12 @@
 {
-    "language": "golang",
-    "application_list": [
-        "signup",
-        "signup-cli"
-    ],
-    "tools": [
-        "azure",
-        "docker",
-        "k8s"
-    ]
+  "language": "golang",
+  "application_list": [
+    "signup",
+    "signup-cli"
+  ],
+  "tools": [
+    "azure",
+    "docker",
+    "k8s"
+  ]
 }
