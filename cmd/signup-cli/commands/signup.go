@@ -13,7 +13,7 @@ import (
 var signupCmd = &cobra.Command{
 	Use:   "signup",
 	Short: "Signup a new organization",
-	Long:  `Signup a new organization creating the default roles and first user`,
+	Long:  `Signup a new organization creating the default roles, the Nalej Admin, and first organization user`,
 	Run: func(cmd *cobra.Command, args []string) {
 		SetupLogging()
 		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath, presharedSecret)
