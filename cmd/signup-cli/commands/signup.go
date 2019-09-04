@@ -20,7 +20,7 @@ var signupCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal().Str("err", err.DebugReport()).Msg("cannot create CLI")
 		}
-		signupCli.SignupOrganization(orgName, ownerEmail, ownerName, ownerPassword)
+		signupCli.SignupOrganization(orgName, ownerEmail, ownerName, ownerPassword, nalejAdminEmail, nalejAdminName, nalejAdminPassword)
 	},
 }
 
