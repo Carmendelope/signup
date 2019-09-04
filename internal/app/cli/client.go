@@ -1,5 +1,5 @@
 /*
- * Copyright (C)  2018 Nalej - All Rights Reserved
+ * Copyright (C) 2019 Nalej - All Rights Reserved
  */
 
 package cli
@@ -73,11 +73,14 @@ func NewSignupCli(signupAddress string, caPath string, clientCertPath string, cl
 //SignupOrganization sends the request to create a new Organization based on the arguments given
 func (s *SignupCli) SignupOrganization(orgName string, ownerEmail string, ownerName string, ownerPassword string, nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) {
 	signupRequest := &grpc_signup_go.SignupOrganizationRequest{
-		OrganizationName: orgName,
-		OwnerEmail:       ownerEmail,
-		OwnerName:        ownerName,
-		OwnerPassword:    ownerPassword,
-		PresharedSecret: s.PresharedSecret,
+		OrganizationName:   orgName,
+		OwnerEmail:         ownerEmail,
+		OwnerName:          ownerName,
+		OwnerPassword:      ownerPassword,
+		NalejadminEmail:    nalejAdminEmail,
+		NalejadminName:     nalejAdminName,
+		NalejadminPassword: nalejAdminPassword,
+		PresharedSecret:    s.PresharedSecret,
 	}
 	response, err := s.client.SignupOrganization(context.Background(), signupRequest)
 	if err != nil {
