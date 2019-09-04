@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Nalej - All Rights Reserved
+ * Copyright (C) 2019 Nalej - All Rights Reserved
  */
 
 package commands
@@ -29,5 +29,8 @@ func init() {
 	signupCmd.Flags().StringVar(&ownerEmail, "ownerEmail", "", "Email of the organization owner")
 	signupCmd.Flags().StringVar(&ownerName, "ownerName", "", "Name the owner")
 	signupCmd.Flags().StringVar(&ownerPassword, "ownerPassword", "", "Password for the owner account")
+	signupCmd.Flags().StringVar(&nalejAdminEmail, "nalejAdminEmail", "", "Email of the Nalej administrator assigned to the organization")
+	signupCmd.Flags().StringVar(&nalejAdminName, "nalejAdminName", "", "Name the Nalej administrator")
+	signupCmd.Flags().StringVar(&nalejAdminPassword, "nalejAdminPassword", "", "Password for the Nalej administrator account")
 	rootCmd.AddCommand(signupCmd)
 }
