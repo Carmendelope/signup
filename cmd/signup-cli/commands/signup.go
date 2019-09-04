@@ -18,7 +18,7 @@ var signupCmd = &cobra.Command{
 		SetupLogging()
 		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath, presharedSecret)
 		if err != nil {
-			log.Error().Str("err", err.DebugReport()).Msg("cannot create CLI")
+			log.Fatal().Str("err", err.DebugReport()).Msg("cannot create CLI")
 		}
 		signupCli.SignupOrganization(orgName, ownerEmail, ownerName, ownerPassword)
 	},
