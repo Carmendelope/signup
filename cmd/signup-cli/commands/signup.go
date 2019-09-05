@@ -26,11 +26,18 @@ var signupCmd = &cobra.Command{
 
 func init() {
 	signupCmd.Flags().StringVar(&orgName, "orgName", "", "Name of the organization")
+	_ = signupCmd.MarkFlagRequired("orgName")
 	signupCmd.Flags().StringVar(&ownerEmail, "ownerEmail", "", "Email of the organization owner")
+	_ = signupCmd.MarkFlagRequired("ownerEmail")
 	signupCmd.Flags().StringVar(&ownerName, "ownerName", "", "Name the owner")
+	_ = signupCmd.MarkFlagRequired("ownerName")
 	signupCmd.Flags().StringVar(&ownerPassword, "ownerPassword", "", "Password for the owner account")
+	_ = signupCmd.MarkFlagRequired("ownerPassword")
 	signupCmd.Flags().StringVar(&nalejAdminEmail, "nalejAdminEmail", "", "Email of the Nalej administrator assigned to the organization")
+	_ = signupCmd.MarkFlagRequired("nalejAdminEmail")
 	signupCmd.Flags().StringVar(&nalejAdminName, "nalejAdminName", "", "Name the Nalej administrator")
+	_ = signupCmd.MarkFlagRequired("nalejAdminName")
 	signupCmd.Flags().StringVar(&nalejAdminPassword, "nalejAdminPassword", "", "Password for the Nalej administrator account")
+	_ = signupCmd.MarkFlagRequired("nalejAdminPassword")
 	rootCmd.AddCommand(signupCmd)
 }
