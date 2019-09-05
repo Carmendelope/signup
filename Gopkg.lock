@@ -195,11 +195,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9cfed8564b332adf71c2fd8fa6afd6b1d713947dbe1eabb4c7ca93377a9f96cd"
+  digest = "1:ffaa20332022643a821848aa2322787bbfbf06bceb4b4e84cde3b05d07fa51ac"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "43c01164e93111c754a278ab423ba01063c44917"
+  revision = "749cb33beabd9aa6d3178e3de05bcc914f70b2bf"
 
 [[projects]]
   digest = "1:740b51a55815493a8d0f2b1e0d0ae48fe48953bf7eaf3fcc4198823bf67768c0"
@@ -228,14 +228,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e1505a39ad844b6a89856ffb97363cc47cbee0c511c1423d2d9c673cc4a215a0"
+  digest = "1:d57fc4649c80e946db4ae2064153e5896dc45936752db1ade3d94c52734116c2"
   name = "google.golang.org/genproto"
   packages = [
     "googleapis/rpc/errdetails",
     "googleapis/rpc/status",
   ]
   pruneopts = ""
-  revision = "24fa4b261c55da65468f2abfdae2b024eef27dfb"
+  revision = "92dd089d5514cecde7a465f807541f83dfd486d5"
 
 [[projects]]
   digest = "1:e8a4007e58ea9431f6460d1bc5c7f9dd29fdc0211ab780b6ad3d0581478f2076"
