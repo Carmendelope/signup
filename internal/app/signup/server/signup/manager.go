@@ -115,16 +115,6 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 	return orgCreated, nil
 }
 
-func addUser(err error, m *Manager, addNalejAdminRequest *grpc_user_manager_go.AddUserRequest, orgCreated *grpc_organization_go.Organization) error {
-	nalejAdminAdded, err := m.UserClient.AddUser(context.Background(), addNalejAdminRequest)
-	if err != nil {
-		log.Error().Str("roleID", addNalejAdminRequest.RoleId).Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating user")
-		return err
-	}
-	log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("role", nalejAdminAdded.RoleName).Msg("User has been created")
-	return nil
-}
-
 func (m *Manager) createRoles(organizationID string) (*string, *string, error) {
 	var ownerRoleID string
 	var nalejAdminRoleID string
@@ -225,4 +215,14 @@ func (m *Manager) RemoveOrganization(organizationID *grpc_organization_go.Organi
 	// Delete roles
 	// Delete organization
 	panic("implement me")
+}
+
+func addUser(err error, m *Manager, addNalejAdminRequest *grpc_user_manager_go.AddUserRequest, orgCreated *grpc_organization_go.Organization) error {
+	nalejAdminAdded, err := m.UserClient.AddUser(context.Background(), addNalejAdminRequest)
+	if err != nil {
+		log.Error().Str("roleID", addNalejAdminRequest.RoleId).Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating user")
+		return err
+	}
+	log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("role", nalejAdminAdded.RoleName).Msg("User has been created")
+	return nil
 }
