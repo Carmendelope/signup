@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2019 Nalej - All Rights Reserved
+ */
+
 package entities
 
 import (
@@ -25,6 +29,15 @@ func ValidSignupOrganizationRequest(signupRequest *grpc_signup_go.SignupOrganiza
 	}
 	if signupRequest.OwnerPassword == "" {
 		return derrors.NewInvalidArgumentError("owner_password must be provided")
+	}
+	if signupRequest.NalejadminEmail == "" {
+		return derrors.NewInvalidArgumentError("nalejadmin_email must be provided")
+	}
+	if signupRequest.NalejadminName == "" {
+		return derrors.NewInvalidArgumentError("nalejadmin_name must be provided")
+	}
+	if signupRequest.NalejadminPassword == "" {
+		return derrors.NewInvalidArgumentError("nalejadmin_password must be provided")
 	}
 	return nil
 }

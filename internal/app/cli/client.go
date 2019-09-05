@@ -1,5 +1,5 @@
 /*
- * Copyright (C)  2018 Nalej - All Rights Reserved
+ * Copyright (C) 2019 Nalej - All Rights Reserved
  */
 
 package cli
@@ -22,7 +22,7 @@ import (
 
 //SignupCli with necessary data to create a new client
 type SignupCli struct {
-	client grpc_signup_go.SignupClient
+	client          grpc_signup_go.SignupClient
 	PresharedSecret string
 }
 
@@ -71,13 +71,16 @@ func NewSignupCli(signupAddress string, caPath string, clientCertPath string, cl
 }
 
 //SignupOrganization sends the request to create a new Organization based on the arguments given
-func (s *SignupCli) SignupOrganization(orgName string, ownerEmail string, ownerName string, ownerPassword string) {
+func (s *SignupCli) SignupOrganization(orgName string, ownerEmail string, ownerName string, ownerPassword string, nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) {
 	signupRequest := &grpc_signup_go.SignupOrganizationRequest{
-		OrganizationName: orgName,
-		OwnerEmail:       ownerEmail,
-		OwnerName:        ownerName,
-		OwnerPassword:    ownerPassword,
-		PresharedSecret: s.PresharedSecret,
+		OrganizationName:   orgName,
+		OwnerEmail:         ownerEmail,
+		OwnerName:          ownerName,
+		OwnerPassword:      ownerPassword,
+		NalejadminEmail:    nalejAdminEmail,
+		NalejadminName:     nalejAdminName,
+		NalejadminPassword: nalejAdminPassword,
+		PresharedSecret:    s.PresharedSecret,
 	}
 	response, err := s.client.SignupOrganization(context.Background(), signupRequest)
 	if err != nil {
@@ -115,7 +118,7 @@ func getTLSConfig(caPath string, clientCertPath string, clientKeyPath string) (c
 
 func (s *SignupCli) List() {
 	request := &grpc_signup_go.SignupInfoRequest{
-		PresharedSecret:      s.PresharedSecret,
+		PresharedSecret: s.PresharedSecret,
 	}
 	organizations, err := s.client.ListOrganizations(context.Background(), request)
 	s.PrintResultOrError(organizations, err, "cannot list organizations")
@@ -123,8 +126,8 @@ func (s *SignupCli) List() {
 
 func (s *SignupCli) Info(organizationID string) {
 	request := &grpc_signup_go.SignupInfoRequest{
-		OrganizationId: organizationID,
-		PresharedSecret:      s.PresharedSecret,
+		OrganizationId:  organizationID,
+		PresharedSecret: s.PresharedSecret,
 	}
 	info, err := s.client.GetOrganizationInfo(context.Background(), request)
 	s.PrintResultOrError(info, err, "cannot get organization info")
@@ -138,10 +141,10 @@ func (s *SignupCli) PrintResultOrError(result interface{}, err error, errMsg str
 	}
 }
 
-func (s *SignupCli) PrintSuccessOrError(err error, errMsg string, successMsg string){
-	if err != nil{
+func (s *SignupCli) PrintSuccessOrError(err error, errMsg string, successMsg string) {
+	if err != nil {
 		log.Fatal().Str("trace", conversions.ToDerror(err).DebugReport()).Msg(errMsg)
-	}else{
+	} else {
 		fmt.Println(fmt.Sprintf("{\"msg\":\"%s\"}", successMsg))
 	}
 }
