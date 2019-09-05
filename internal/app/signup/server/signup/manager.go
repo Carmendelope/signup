@@ -80,53 +80,73 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 	}
 	log.Debug().Str("organizationID", orgCreated.OrganizationId).Msg("Organization has been created")
 
-	ownerRoleID, err := m.createRoles(orgCreated.OrganizationId)
+	ownerRoleID, nalejAdminRoleID, err := m.createRoles(orgCreated.OrganizationId)
 	if err != nil {
 		// TODO Rollback required
 		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating roles")
 		return nil, err
 	}
 
-	addUserRequest := &grpc_user_manager_go.AddUserRequest{
+	// Add Nalej administrator
+	addNalejAdminRequest := &grpc_user_manager_go.AddUserRequest{
+		OrganizationId: orgCreated.OrganizationId,
+		Email:          signupRequest.NalejadminEmail,
+		Password:       signupRequest.NalejadminPassword,
+		Name:           signupRequest.NalejadminName,
+		RoleId:         *nalejAdminRoleID,
+	}
+	nalejAdminAdded, err := m.UserClient.AddUser(context.Background(), addNalejAdminRequest)
+	if err != nil {
+		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating Nalej admin")
+		return nil, err
+	}
+	log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("role", nalejAdminAdded.RoleName).Msg("User has been created")
+
+	// Add owner
+	addOwnerRequest := &grpc_user_manager_go.AddUserRequest{
 		OrganizationId: orgCreated.OrganizationId,
 		Email:          signupRequest.OwnerEmail,
 		Password:       signupRequest.OwnerPassword,
 		Name:           signupRequest.OwnerName,
 		RoleId:         *ownerRoleID,
 	}
-	userAdded, err := m.UserClient.AddUser(context.Background(), addUserRequest)
+	ownerAdded, err := m.UserClient.AddUser(context.Background(), addOwnerRequest)
 	if err != nil {
-		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating user")
+		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating owner")
 		return nil, err
 	}
-	log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("rol", userAdded.RoleName).Msg("User has been created")
+	log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("role", ownerAdded.RoleName).Msg("User has been created")
 	return orgCreated, nil
 }
 
-func (m *Manager) createRoles(organizationID string) (*string, error) {
-	ownerRoleID := ""
+func (m *Manager) createRoles(organizationID string) (*string, *string, error) {
+	var ownerRoleID string
+	var nalejAdminRoleID string
 	for name, primitives := range DefaultRoles {
 		internal, found := InternalRoles[name]
 		if !found {
-			return nil, derrors.NewInternalError("cannot determine if role is internal")
+			return nil, nil, derrors.NewInternalError("cannot determine if role is internal")
 		}
 		addRoleRequest := &grpc_user_manager_go.AddRoleRequest{
 			OrganizationId: organizationID,
 			Name:           name,
-			Description:    "Auto generate rol",
+			Description:    "Auto generate role",
 			Internal:       internal,
 			Primitives:     primitives,
 		}
 		added, err := m.UserClient.AddRole(context.Background(), addRoleRequest)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		if name == "Owner" {
+		switch name {
+		case "Owner":
 			ownerRoleID = added.RoleId
+		case "NalejAdmin":
+			nalejAdminRoleID = added.RoleId
 		}
-		log.Debug().Str("organizationID", organizationID).Str("roleID", added.RoleId).Msg("Rol has been created")
+		log.Debug().Str("organizationID", organizationID).Str("roleID", added.RoleId).Msg("Role has been created")
 	}
-	return &ownerRoleID, nil
+	return &ownerRoleID, &nalejAdminRoleID, nil
 }
 
 // ListOrganizations returns the list of organizations in the system.
