@@ -41,13 +41,13 @@ var DefaultRoles = map[string][]grpc_authx_go.AccessPrimitive{
 	},
 }
 
-// InternalRoles contains the relationship of which roles are internal.
+// InternalRoles contains the relationship of which roles are application managed (no human involved).
 var InternalRoles = map[string]bool{
 	"Owner":      false,
 	"Operator":   false,
 	"Developer":  false,
+	"NalejAdmin": false,
 	"AppCluster": true,
-	"NalejAdmin": true,
 }
 
 // Manager structure with the required providers for cluster operations.
