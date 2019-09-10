@@ -39,6 +39,10 @@
     version="=v0.0.83"
 
 [[constraint]]
+    name="github.com/nalej/grpc-authx-go"
+    version="=v0.0.53"
+
+[[constraint]]
     name="github.com/nalej/grpc-signup-go"
     version="=v0.0.22"
 
