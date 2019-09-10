@@ -36,8 +36,8 @@ var DefaultRoles = map[string][]grpc_authx_go.AccessPrimitive{
 	},
 	"NalejAdmin": {
 		grpc_authx_go.AccessPrimitive_ORG,
-		grpc_authx_go.AccessPrimitive_ORGMNGT,
-		grpc_authx_go.AccessPrimitive_RESOURCESMNGT,
+		grpc_authx_go.AccessPrimitive_ORG_MNGT,
+		grpc_authx_go.AccessPrimitive_RESOURCES_MNGT,
 	},
 }
 
