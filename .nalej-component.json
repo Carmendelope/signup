@@ -1,8 +1,12 @@
 {
   "language": "golang",
+  "version": "v0.4.0",
   "application_list": [
     "signup",
     "signup-cli"
+  ],
+  "image_list": [
+    "signup"
   ],
   "tools": [
     "azure",
