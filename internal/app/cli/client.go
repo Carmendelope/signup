@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-signup-go"
@@ -87,7 +88,7 @@ func (s *SignupCli) SignupOrganization(orgName string, ownerEmail string, ownerN
 		dErr := conversions.ToDerror(err)
 		log.Error().Str("err", dErr.Error()).Msg("cannot signup organization")
 		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error")
-		return
+		os.Exit(1)
 	}
 	log.Info().Str("organizationID", response.OrganizationId).Msg("organization has been added")
 }
