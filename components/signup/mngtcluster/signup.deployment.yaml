@@ -29,7 +29,6 @@ spec:
           imagePullPolicy: Always
           args:
             - "run"
-            - "--debug"
             - "--systemModelAddress=system-model.__NPH_NAMESPACE:8800"
             - "--userManagerAddress=user-manager.__NPH_NAMESPACE:8920"
             - "--usePresharedSecret"

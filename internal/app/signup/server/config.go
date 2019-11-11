@@ -1,5 +1,17 @@
 /*
- * Copyright (C)  2018 Nalej - All Rights Reserved
+ * Copyright 2019 Nalej
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package server
@@ -38,7 +50,7 @@ type Config struct {
 	ClientSecret string
 
 	UsePresharedSecret bool
-	PresharedSecret string
+	PresharedSecret    string
 }
 
 //Validate makes the necessary validation in configuration prior to its use
@@ -74,14 +86,14 @@ func (conf *Config) Print() {
 	log.Info().Str("URL", conf.SystemModelAddress).Msg("System Model")
 	log.Info().Str("URL", conf.UserManagerAddress).Msg("User Manager")
 	log.Info().Bool("TLS", conf.UseTLS).Msg("TLS Enabled")
-	if conf.UseTLS{
+	if conf.UseTLS {
 		log.Info().Str("TLS", conf.CertCAPath).Msg("CA Certificate Path")
 		log.Info().Str("TLS", conf.CertFilePath).Msg("Server Certificate Path")
 		log.Info().Str("TLS", conf.CertKeyPath).Msg("Server Certificate Key Path")
 		log.Info().Str("TLS", strings.Repeat("*", len(conf.ClientSecret))).Msg("Client certificate secret")
 	}
 	log.Info().Bool("enabled", conf.UsePresharedSecret).Msg("Use preshared secret")
-	if conf.UsePresharedSecret{
+	if conf.UsePresharedSecret {
 		log.Info().Str("TLS", strings.Repeat("*", len(conf.PresharedSecret))).Msg("Preshared secret")
 	}
 
