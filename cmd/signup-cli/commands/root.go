@@ -29,8 +29,6 @@ import (
 var debugLevel bool
 var consoleLogging bool
 
-
-
 var rootCmd = &cobra.Command{
 	Use:     "signup-cli",
 	Short:   "Signup CLI",

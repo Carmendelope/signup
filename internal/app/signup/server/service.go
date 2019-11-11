@@ -47,10 +47,10 @@ func NewService(conf Config) *Service {
 
 //Clients definition
 type Clients struct {
-	orgClient  grpc_organization_go.OrganizationsClient
-	userClient grpc_user_manager_go.UserManagerClient
+	orgClient     grpc_organization_go.OrganizationsClient
+	userClient    grpc_user_manager_go.UserManagerClient
 	clusterClient grpc_infrastructure_go.ClustersClient
-	appClient grpc_application_go.ApplicationsClient
+	appClient     grpc_application_go.ApplicationsClient
 }
 
 //GetClients gets a new instance of Clients with an active client of every type defined
