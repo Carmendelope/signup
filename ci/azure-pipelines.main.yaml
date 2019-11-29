@@ -10,8 +10,7 @@ resources:
       type: github
       name: nalej/ci-templates
       endpoint: nalej
-      #ref: refs/tags/v1.0.4
-      ref: refs/heads/feature/NP-2431_Deploy_Stage
+      ref: refs/tags/v1.0.5
 
 stages:
 - stage: 'SlackStart'
@@ -51,9 +50,8 @@ stages:
     - template: steps/docker-main.yaml@ci_templates
 
 - stage: 'ComponentDeploy'
-  #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  #dependsOn: 'ImageBuild'
-  dependsOn: 'BinaryBuild'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn: 'ImageBuild'
   jobs:
   - job: 
     pool:
@@ -84,14 +82,6 @@ stages:
         kubeconfig: $(kubeconfig)
         namespace: $(namespace)
 
-    - script: |
-        echo $(ls)
-        echo $(pwd)
-        cd dist/yaml/staging
-        echo $(ls)
-        cd mngtcluster
-        echo $(ls)
-
     - template: k8s/resources/create.yaml@ci_templates
       parameters:
         kubeconfig: $(kubeconfig)
@@ -114,7 +104,7 @@ stages:
         namespace: $(namespace)
 
 - stage: 'AssetPublish'
-  #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: 'ComponentDeploy'
   jobs:
   - job: 
