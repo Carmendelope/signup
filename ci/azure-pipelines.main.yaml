@@ -85,12 +85,12 @@ stages:
         namespace: $(namespace)
 
     - script: |
-        echo $ls
-        echo $pwd
+        echo $(ls)
+        echo $(pwd)
         cd dist/yaml/staging
-        echo $ls
+        echo $(ls)
         cd mngtcluster
-        echo $ls
+        echo $(ls)
 
     - template: k8s/resources/create.yaml@ci_templates
       parameters:
