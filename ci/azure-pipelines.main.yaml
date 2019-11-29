@@ -84,6 +84,14 @@ stages:
         kubeconfig: $(kubeconfig)
         namespace: $(namespace)
 
+    - script: |
+        echo $ls
+        echo $pwd
+        cd dist/yaml/staging
+        echo $ls
+        cd mngtcluster
+        echo $ls
+
     - template: k8s/resources/create.yaml@ci_templates
       parameters:
         kubeconfig: $(kubeconfig)
