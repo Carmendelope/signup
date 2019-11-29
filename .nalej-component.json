@@ -9,6 +9,9 @@
   "image_list": [
     "signup"
   ],
+  "component_list": [
+    "signup"
+  ],
   "tools": [
     "docker",
     "k8s"
