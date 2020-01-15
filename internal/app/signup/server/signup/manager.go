@@ -181,10 +181,7 @@ func (m *Manager) extendOrganizationInfo(org *grpc_organization_manager_go.Organ
 	orgID := &grpc_organization_go.OrganizationId{
 		OrganizationId: org.OrganizationId,
 	}
-	//users, err := m.UserClient.ListUsers(context.Background(), orgID)
-	//if err != nil {
-	//	return nil, err
-	//}
+
 	clusters, err := m.ClusterClient.ListClusters(context.Background(), orgID)
 	if err != nil {
 		return nil, err
