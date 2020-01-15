@@ -24,6 +24,7 @@ import (
 	"github.com/nalej/grpc-common-go"
 	"github.com/nalej/grpc-infrastructure-go"
 	"github.com/nalej/grpc-organization-go"
+	"github.com/nalej/grpc-organization-manager-go"
 	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-user-manager-go"
 	"github.com/nalej/grpc-utils/pkg/conversions"
@@ -64,7 +65,7 @@ var InternalRoles = map[string]bool{
 
 // Manager structure with the required providers for cluster operations.
 type Manager struct {
-	OrgClient     grpc_organization_go.OrganizationsClient
+	OrgClient     grpc_organization_manager_go.OrganizationsClient
 	UserClient    grpc_user_manager_go.UserManagerClient
 	ClusterClient grpc_infrastructure_go.ClustersClient
 	AppClient     grpc_application_go.ApplicationsClient
@@ -72,7 +73,7 @@ type Manager struct {
 
 // NewManager creates a Manager using a set of providers.
 func NewManager(
-	orgClient grpc_organization_go.OrganizationsClient,
+	orgClient grpc_organization_manager_go.OrganizationsClient,
 	userClient grpc_user_manager_go.UserManagerClient,
 	clusterClient grpc_infrastructure_go.ClustersClient,
 	appClient grpc_application_go.ApplicationsClient,
@@ -80,7 +81,7 @@ func NewManager(
 	return Manager{orgClient, userClient, clusterClient, appClient}
 }
 
-func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_organization_go.Organization, error) {
+func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_organization_manager_go.Organization, error) {
 
 	addOrganizationRequest := &grpc_organization_go.AddOrganizationRequest{
 		Name: signupRequest.OrganizationName,
@@ -176,14 +177,11 @@ func (m *Manager) ListOrganizations(request *grpc_signup_go.SignupInfoRequest) (
 	}, err
 }
 
-func (m *Manager) extendOrganizationInfo(org *grpc_organization_go.Organization) (*grpc_signup_go.OrganizationInfo, error) {
+func (m *Manager) extendOrganizationInfo(org *grpc_organization_manager_go.Organization) (*grpc_signup_go.OrganizationInfo, error) {
 	orgID := &grpc_organization_go.OrganizationId{
 		OrganizationId: org.OrganizationId,
 	}
-	users, err := m.UserClient.ListUsers(context.Background(), orgID)
-	if err != nil {
-		return nil, err
-	}
+
 	clusters, err := m.ClusterClient.ListClusters(context.Background(), orgID)
 	if err != nil {
 		return nil, err
@@ -200,7 +198,7 @@ func (m *Manager) extendOrganizationInfo(org *grpc_organization_go.Organization)
 		OrganizationId:    org.OrganizationId,
 		Name:              org.Name,
 		Created:           org.Created,
-		NumberUsers:       int32(len(users.Users)),
+		NumberUsers:       org.NumUsers,
 		NumberClusters:    int32(len(clusters.Clusters)),
 		NumberDescriptors: int32(len(descriptors.Descriptors)),
 		NumberInstances:   int32(len(instances.Instances)),
@@ -229,7 +227,7 @@ func (m *Manager) RemoveOrganization(organizationID *grpc_organization_go.Organi
 	panic("implement me")
 }
 
-func addUser(err error, m *Manager, addNalejAdminRequest *grpc_user_manager_go.AddUserRequest, orgCreated *grpc_organization_go.Organization) error {
+func addUser(err error, m *Manager, addNalejAdminRequest *grpc_user_manager_go.AddUserRequest, orgCreated *grpc_organization_manager_go.Organization) error {
 	nalejAdminAdded, err := m.UserClient.AddUser(context.Background(), addNalejAdminRequest)
 	if err != nil {
 		log.Error().Str("roleID", addNalejAdminRequest.RoleId).Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating user")

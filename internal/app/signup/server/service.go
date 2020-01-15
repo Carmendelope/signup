@@ -22,9 +22,9 @@ import (
 	"github.com/nalej/grpc-infrastructure-go"
 	"net"
 
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/nalej/derrors"
-	"github.com/nalej/grpc-organization-go"
+	"github.com/nalej/grpc-organization-manager-go"
 	"github.com/nalej/grpc-signup-go"
 	"github.com/nalej/grpc-user-manager-go"
 	"github.com/nalej/signup/internal/app/signup/server/signup"
@@ -47,7 +47,7 @@ func NewService(conf Config) *Service {
 
 //Clients definition
 type Clients struct {
-	orgClient     grpc_organization_go.OrganizationsClient
+	orgClient     grpc_organization_manager_go.OrganizationsClient
 	userClient    grpc_user_manager_go.UserManagerClient
 	clusterClient grpc_infrastructure_go.ClustersClient
 	appClient     grpc_application_go.ApplicationsClient
@@ -65,7 +65,12 @@ func (s *Service) GetClients() (*Clients, derrors.Error) {
 		return nil, derrors.AsError(err, "cannot create connection with the user manager")
 	}
 
-	oClient := grpc_organization_go.NewOrganizationsClient(smConn)
+	orgConn, err := grpc.Dial(s.Configuration.OrganizationManagerAddress, grpc.WithInsecure())
+	if err != nil {
+		return nil, derrors.AsError(err, "cannot create connection with the organization manager")
+	}
+
+	oClient := grpc_organization_manager_go.NewOrganizationsClient(orgConn)
 	uClient := grpc_user_manager_go.NewUserManagerClient(uConn)
 	cClient := grpc_infrastructure_go.NewClustersClient(smConn)
 	aClient := grpc_application_go.NewApplicationsClient(smConn)
