@@ -38,6 +38,8 @@ type Config struct {
 	SystemModelAddress string
 	// UserManagerAddress with the host:port to connect to the User manager.
 	UserManagerAddress string
+	// OrganizationManagerAddress with the host:port to connect to the Organization manager.
+	OrganizationManagerAddress string
 	// UseTLS if the gRPC service uses TLS or not
 	UseTLS bool
 	// CertCA with the absolute path to the certificate CA to trust
@@ -67,6 +69,10 @@ func (conf *Config) Validate() derrors.Error {
 	if conf.UserManagerAddress == "" {
 		return derrors.NewInvalidArgumentError("userManagerAddress must be set")
 	}
+
+	if conf.OrganizationManagerAddress == "" {
+		return derrors.NewInvalidArgumentError("organizationManagerAddress must be set")
+	}
 	if err := conf.validateTLS(); err != nil {
 		return err
 	}
@@ -85,6 +91,8 @@ func (conf *Config) Print() {
 	log.Info().Int("port", conf.HTTPPort).Msg("HTTP port")
 	log.Info().Str("URL", conf.SystemModelAddress).Msg("System Model")
 	log.Info().Str("URL", conf.UserManagerAddress).Msg("User Manager")
+	log.Info().Str("URL", conf.OrganizationManagerAddress).Msg("Organization Manager")
+
 	log.Info().Bool("TLS", conf.UseTLS).Msg("TLS Enabled")
 	if conf.UseTLS {
 		log.Info().Str("TLS", conf.CertCAPath).Msg("CA Certificate Path")

@@ -60,6 +60,8 @@ func init() {
 		"System Model address (host:port)")
 	runCmd.PersistentFlags().StringVar(&config.UserManagerAddress, "userManagerAddress", "localhost:8920",
 		"User Manager address (host:port)")
+	runCmd.PersistentFlags().StringVar(&config.OrganizationManagerAddress, "organizationManagerAddress", "localhost:8950",
+		"User Manager address (host:port)")
 	runCmd.PersistentFlags().BoolVar(&config.UsePresharedSecret, "usePresharedSecret", false, "Use preshared secret to authenticate users")
 	runCmd.PersistentFlags().StringVar(&config.PresharedSecret, "presharedSecret", "changemeifyouareusingthis", "Preshared secret with the client")
 	rootCmd.AddCommand(runCmd)

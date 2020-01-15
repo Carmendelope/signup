@@ -30,6 +30,7 @@ spec:
           args:
             - "run"
             - "--systemModelAddress=system-model.__NPH_NAMESPACE:8800"
+            - "--organizationManagerAddress=organization-manager.__NPH_NAMESPACE:8950"
             - "--userManagerAddress=user-manager.__NPH_NAMESPACE:8920"
             - "--usePresharedSecret"
           #- "--tls"

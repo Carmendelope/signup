@@ -117,12 +117,20 @@
   version = "v0.0.30"
 
 [[projects]]
-  digest = "1:0e5100c2c9fcced5b1c0f2306742cbd44dd401cfc52a4b90678c02277fb44ac2"
+  digest = "1:72ac554d3a65bb7182facea97d8edd0d679df14984c66b1110da0eda47441e7b"
   name = "github.com/nalej/grpc-organization-go"
   packages = ["."]
   pruneopts = ""
-  revision = "7d52d468280a36e3c7dff9633303edd50c416b0a"
-  version = "v0.0.29"
+  revision = "448507f75afa7dd6c13a4481970bef0fb6383d39"
+  version = "v0.0.33"
+
+[[projects]]
+  digest = "1:e93099df7b2c493f8a4cb0ff1e0948b382348ab07850d72480a7ebe406ed8d09"
+  name = "github.com/nalej/grpc-organization-manager-go"
+  packages = ["."]
+  pruneopts = ""
+  revision = "acf8c70e3c900214881f7189b89128da5d5f1e9c"
+  version = "v0.0.3"
 
 [[projects]]
   digest = "1:742e280a68c2cbefdcc03e076ba7a2b22250cb9ba15e7e466eee55b0882e5282"
@@ -310,6 +318,7 @@
     "github.com/nalej/grpc-common-go",
     "github.com/nalej/grpc-infrastructure-go",
     "github.com/nalej/grpc-organization-go",
+    "github.com/nalej/grpc-organization-manager-go",
     "github.com/nalej/grpc-signup-go",
     "github.com/nalej/grpc-user-manager-go",
     "github.com/nalej/grpc-utils/pkg/conversions",
