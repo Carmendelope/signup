@@ -33,7 +33,7 @@ import (
 )
 
 const DefaultStorageAllocationSize = 100 * 1024 * 1024
-const DefaultStorageAllocationSizeDesc = "Default Storage Size"
+const DefaultStorageAllocationSizeDesc = "Default Storage Size (bytes)"
 
 // DefaultRoles defines the map of roles that will be automatically created by the system by default.
 var DefaultRoles = map[string][]grpc_authx_go.AccessPrimitive{
