@@ -18,6 +18,7 @@ package signup
 
 import (
 	"context"
+	"fmt"
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-application-go"
 	"github.com/nalej/grpc-authx-go"
@@ -30,6 +31,9 @@ import (
 	"github.com/nalej/grpc-utils/pkg/conversions"
 	"github.com/rs/zerolog/log"
 )
+
+const DefaultStorageAllocationSize = 100 * 1024 * 1024
+const DefaultStorageAllocationSizeDesc = "Default Storage Size"
 
 // DefaultRoles defines the map of roles that will be automatically created by the system by default.
 var DefaultRoles = map[string][]grpc_authx_go.AccessPrimitive{
@@ -92,6 +96,20 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 		return nil, err
 	}
 	log.Debug().Str("organizationID", orgCreated.OrganizationId).Msg("Organization has been created")
+
+	// create organization settings
+	_, err = m.OrgClient.AddSetting(context.Background(), &grpc_organization_go.AddSettingRequest{
+		OrganizationId: orgCreated.OrganizationId,
+		Key:            grpc_organization_go.AllowedSettingKey_DEFAULT_STORAGE_SIZE.String(),
+		Value:          fmt.Sprintf("%d", DefaultStorageAllocationSize),
+		Description:    DefaultStorageAllocationSizeDesc,
+	})
+	if err != nil {
+		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating settings")
+	}else{
+		log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("setting", grpc_organization_go.AllowedSettingKey_DEFAULT_STORAGE_SIZE.String()).Msg("Setting added")
+	}
+
 
 	ownerRoleID, nalejAdminRoleID, err := m.createRoles(orgCreated.OrganizationId)
 	if err != nil {
