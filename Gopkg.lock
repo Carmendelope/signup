@@ -157,12 +157,12 @@
   version = "v0.0.32"
 
 [[projects]]
-  digest = "1:2dfa28c6e7a7fdd554e3b1c848c0eb71a472c4ccc241f0ae919a2f45847a956b"
+  digest = "1:7a32bdd201afeaf3feddc70ef8dbc24fc76690dc2176ff7bf350b4cdbe0b9f42"
   name = "github.com/nalej/grpc-user-manager-go"
   packages = ["."]
   pruneopts = ""
-  revision = "e76f25fa17db50e2bfc1ff0e7de29beb7d5eea9b"
-  version = "v0.0.28"
+  revision = "62bbbd03621cec64f40f2218523622a9cc6a79b4"
+  version = "v0.0.30"
 
 [[projects]]
   digest = "1:0261633894934ecc23f9b2551c21676dc5e89554d76aafd8ccb84aff21196799"
