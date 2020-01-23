@@ -21,8 +21,7 @@ To build and compile this repository use the provided Makefile:
 make all
 ```
 
-This operation generates the binaries for this repo, download dependencies,
-run existing tests and generate ready-to-deploy Kubernetes files.
+This operation generates the binaries for this repo, downloads the required dependencies, runs existing tests and generates ready-to-deploy Kubernetes files
 
 ### Run tests
 
@@ -35,16 +34,15 @@ make test
 ## Manually testing client/server certificate
 
 * Make everything: `make`
-* Generate a client and secret certificate pairs. (Requires CFSSL to work: `brew install cfssl`)
-* Create docker image and deploy it in Kubernetes (with its dependent services)
-* Because the way certificates work, it's necessary to override the domain in `/etc/hosts` to make it work.
-You have to add your minikube ip (`minikube ip`) as an entry in your `/etc/hosts` pointing to `signup.nalej`.
+* Generate a client and secret certificate pairs (requires CFSSL to work: `brew install cfssl`).
+* Create a docker image and deploy it in Kubernetes (with its dependent services).
+* Because of the way certificates work, it's necessary to override the domain in `/etc/hosts`. Add your minikube ip (`minikube ip`) as an entry in your `/etc/hosts` pointing to `signup.nalej`.
 * Retrieve the port of the signup service running on minikube:
   ```shell script
   service_url=$(minikube service --namespace=nalej --url signup); echo ${service_url#http://*:}
   ```
 
-* Launch the signup-cli with the required parameters replacing the placeholders with its correct values (paths are absolute): 
+* Launch the signup-cli with the required parameters, replacing the placeholders with its correct values (paths are absolute): 
   
   ```shell script
   ./bin/signup-cli signup --signupAddress=signup.nalej:SERVICE_PORT --orgName=test --ownerEmail=test -- ownerName=test --ownerPassword=test --caPath=CLUSTER_CA_PATH --clientCertPath=CLIENT_CERT_PATH --clientKeyPath=CLIENT_KEY_PATH
@@ -71,7 +69,7 @@ After compiling the project, the `signup-cli` will be available. With it, you wi
 in a cluster.
 
 Before launching the service you need to generate the server and client certificates.
-To do it go to `scripts` and execute `setup_service_certificates.sh`.
+To do it, go to `scripts` and execute `setup_service_certificates.sh`.
 When it is done, you'll have the client certificate and its key in that directory.
 
 Example:
@@ -89,7 +87,7 @@ pull requests to us.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
+We use [SemVer](http://semver.org/) for versioning. For the available versions, see the
 [tags on this repository](https://github.com/nalej/signup/tags). 
 
 ## Authors
