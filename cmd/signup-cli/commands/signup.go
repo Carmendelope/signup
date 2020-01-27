@@ -32,13 +32,27 @@ var signupCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal().Str("err", err.DebugReport()).Msg("cannot create CLI")
 		}
-		signupCli.SignupOrganization(orgName, ownerEmail, ownerName, ownerPassword, nalejAdminEmail, nalejAdminName, nalejAdminPassword)
+		signupCli.SignupOrganization(orgName, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
+			ownerEmail, ownerName, ownerPassword,
+			nalejAdminEmail, nalejAdminName, nalejAdminPassword)
 	},
 }
 
-func init() {
+// addOrgFlags adds the Organization fields as parameters for the command. Notice that default values are used
+// to avoid breaking calling scripts.
+func addOrgFlags() {
 	signupCmd.Flags().StringVar(&orgName, "orgName", "", "Name of the organization")
 	_ = signupCmd.MarkFlagRequired("orgName")
+	signupCmd.Flags().StringVar(&orgFullAddress, "orgAddress", "Unknown", "Organization full address")
+	signupCmd.Flags().StringVar(&orgCity, "orgCity", "Unknown", "Organization City")
+	signupCmd.Flags().StringVar(&orgState, "orgState", "Unknown", "Organization State")
+	signupCmd.Flags().StringVar(&orgCountry, "orgCountry", "Unknown", "Organization State")
+	signupCmd.Flags().StringVar(&orgZipCode, "orgZipCode", "Unknown", "Organization ZIP code")
+	signupCmd.Flags().StringVar(&orgPhotoPath, "orgPhotoPath", "", "Path of the organization photo/logo")
+}
+
+func init() {
+	addOrgFlags()
 	signupCmd.Flags().StringVar(&ownerEmail, "ownerEmail", "", "Email of the organization owner")
 	_ = signupCmd.MarkFlagRequired("ownerEmail")
 	signupCmd.Flags().StringVar(&ownerName, "ownerName", "", "Name the owner")

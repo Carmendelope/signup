@@ -84,16 +84,25 @@ func NewSignupCli(signupAddress string, caPath string, clientCertPath string, cl
 }
 
 //SignupOrganization sends the request to create a new Organization based on the arguments given
-func (s *SignupCli) SignupOrganization(orgName string, ownerEmail string, ownerName string, ownerPassword string, nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) {
+func (s *SignupCli) SignupOrganization(
+	orgName string, orgFullAddress string, orgCity string, orgState string, orgCountry string, orgZipCode string,
+	orgPhotoPath string,
+	ownerEmail string, ownerName string, ownerPassword string,
+	nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) {
 	signupRequest := &grpc_signup_go.SignupOrganizationRequest{
-		OrganizationName:   orgName,
-		OwnerEmail:         ownerEmail,
-		OwnerName:          ownerName,
-		OwnerPassword:      ownerPassword,
-		NalejadminEmail:    nalejAdminEmail,
-		NalejadminName:     nalejAdminName,
-		NalejadminPassword: nalejAdminPassword,
-		PresharedSecret:    s.PresharedSecret,
+		OrganizationName:        orgName,
+		OrganizationFullAddress: orgFullAddress,
+		OrganizationCity:        orgCity,
+		OrganizationState:       orgState,
+		OrganizationCountry:     orgCountry,
+		OrganizationZipCode:     orgZipCode,
+		OwnerEmail:              ownerEmail,
+		OwnerName:               ownerName,
+		OwnerPassword:           ownerPassword,
+		PresharedSecret:         s.PresharedSecret,
+		NalejadminEmail:         nalejAdminEmail,
+		NalejadminName:          nalejAdminName,
+		NalejadminPassword:      nalejAdminPassword,
 	}
 	response, err := s.client.SignupOrganization(context.Background(), signupRequest)
 	if err != nil {
