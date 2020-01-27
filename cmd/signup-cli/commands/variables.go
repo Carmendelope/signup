@@ -22,6 +22,13 @@ var clientCertPath string
 var clientKeyPath string
 
 var orgName string
+var orgFullAddress string
+var orgCity string
+var orgState string
+var orgCountry string
+var orgZipCode string
+var orgPhotoPath string
+
 var ownerEmail string
 var ownerName string
 var ownerPassword string

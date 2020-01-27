@@ -88,7 +88,13 @@ func NewManager(
 func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_organization_manager_go.Organization, error) {
 
 	addOrganizationRequest := &grpc_organization_go.AddOrganizationRequest{
-		Name: signupRequest.OrganizationName,
+		Name:                 signupRequest.OrganizationName,
+		FullAddress:          signupRequest.OrganizationFullAddress,
+		City:                 signupRequest.OrganizationCity,
+		State:                signupRequest.OrganizationState,
+		Country:              signupRequest.OrganizationCountry,
+		ZipCode:              signupRequest.OrganizationZipCode,
+		PhotoBase64:          "",
 	}
 	orgCreated, err := m.OrgClient.AddOrganization(context.Background(), addOrganizationRequest)
 	if err != nil {
@@ -109,7 +115,6 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 	}else{
 		log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("setting", grpc_organization_go.AllowedSettingKey_DEFAULT_STORAGE_SIZE.String()).Msg("Setting added")
 	}
-
 
 	ownerRoleID, nalejAdminRoleID, err := m.createRoles(orgCreated.OrganizationId)
 	if err != nil {
