@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Nalej
+ * Copyright 2020 Nalej
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,12 @@ func (s *SignupCli) SignupOrganization(
 	orgPhotoPath string,
 	ownerEmail string, ownerName string, ownerPassword string,
 	nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) {
+
+	orgPhoto, derr := PhotoPathToBase64(orgPhotoPath)
+	if derr != nil {
+		log.Debug().Str("error", derr.DebugReport()).Msg("error reading organization image")
+		log.Warn().Str("orgPhotoPath", orgPhotoPath).Msg("the organization image could not be read")
+	}
 	signupRequest := &grpc_signup_go.SignupOrganizationRequest{
 		OrganizationName:        orgName,
 		OrganizationFullAddress: orgFullAddress,
@@ -96,6 +102,7 @@ func (s *SignupCli) SignupOrganization(
 		OrganizationState:       orgState,
 		OrganizationCountry:     orgCountry,
 		OrganizationZipCode:     orgZipCode,
+		OrganizationPhotoBase64: orgPhoto,
 		OwnerEmail:              ownerEmail,
 		OwnerName:               ownerName,
 		OwnerPassword:           ownerPassword,
