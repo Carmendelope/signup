@@ -141,12 +141,12 @@
   version = "v0.0.3"
 
 [[projects]]
-  digest = "1:b94a242218f1a17c5d9193acbe24d95bc13d1e1a2f5ebf26c5d04854fafc7840"
+  digest = "1:200a021656d3cccd56f6d456c3d5a37e717953bf77982c8f6c7934888496b24e"
   name = "github.com/nalej/grpc-signup-go"
   packages = ["."]
   pruneopts = ""
-  revision = "631632f36450c8d0bf2111e46a65729b731ff40f"
-  version = "v0.0.24"
+  revision = "0724dfccc48b9b8d2d9b66677ae4b1cae5c35c78"
+  version = "v0.0.25"
 
 [[projects]]
   digest = "1:c28ae2de3465b87c885623e72f1a3d8df64c2eac7dde5bd920d53e256e29ba52"

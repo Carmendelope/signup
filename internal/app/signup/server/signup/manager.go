@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Nalej
+ * Copyright 2020 Nalej
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,13 +88,13 @@ func NewManager(
 func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganizationRequest) (*grpc_organization_manager_go.Organization, error) {
 
 	addOrganizationRequest := &grpc_organization_go.AddOrganizationRequest{
-		Name:                 signupRequest.OrganizationName,
-		FullAddress:          signupRequest.OrganizationFullAddress,
-		City:                 signupRequest.OrganizationCity,
-		State:                signupRequest.OrganizationState,
-		Country:              signupRequest.OrganizationCountry,
-		ZipCode:              signupRequest.OrganizationZipCode,
-		PhotoBase64:          "",
+		Name:        signupRequest.OrganizationName,
+		FullAddress: signupRequest.OrganizationFullAddress,
+		City:        signupRequest.OrganizationCity,
+		State:       signupRequest.OrganizationState,
+		Country:     signupRequest.OrganizationCountry,
+		ZipCode:     signupRequest.OrganizationZipCode,
+		PhotoBase64: signupRequest.OrganizationPhotoBase64,
 	}
 	orgCreated, err := m.OrgClient.AddOrganization(context.Background(), addOrganizationRequest)
 	if err != nil {
@@ -112,7 +112,7 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 	})
 	if err != nil {
 		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error creating settings")
-	}else{
+	} else {
 		log.Debug().Str("organizationID", orgCreated.OrganizationId).Str("setting", grpc_organization_go.AllowedSettingKey_DEFAULT_STORAGE_SIZE.String()).Msg("Setting added")
 	}
 

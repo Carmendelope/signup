@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Nalej
+ * Copyright 2020 Nalej
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,14 @@ var signupCmd = &cobra.Command{
 		signupCli, err := cli.NewSignupCli(signupAddress, caPath, clientCertPath, clientKeyPath, presharedSecret)
 		if err != nil {
 			log.Fatal().Str("err", err.DebugReport()).Msg("cannot create CLI")
+			return
 		}
-		signupCli.SignupOrganization(orgName, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
+		err = signupCli.SignupOrganization(orgName, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
 			ownerEmail, ownerName, ownerPassword,
 			nalejAdminEmail, nalejAdminName, nalejAdminPassword)
+		if err != nil {
+			log.Fatal().Msg("signup failed")
+		}
 	},
 }
 

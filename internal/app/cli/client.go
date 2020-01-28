@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Nalej
+ * Copyright 2020 Nalej
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
 
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-signup-go"
@@ -88,7 +87,14 @@ func (s *SignupCli) SignupOrganization(
 	orgName string, orgFullAddress string, orgCity string, orgState string, orgCountry string, orgZipCode string,
 	orgPhotoPath string,
 	ownerEmail string, ownerName string, ownerPassword string,
-	nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) {
+	nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) derrors.Error {
+
+	orgPhoto, derr := PhotoPathToBase64(orgPhotoPath)
+	if derr != nil {
+		log.Debug().Str("error", derr.DebugReport()).Msg("error reading organization image")
+		log.Error().Str("orgPhotoPath", orgPhotoPath).Msg("the organization image could not be read")
+		return derr
+	}
 	signupRequest := &grpc_signup_go.SignupOrganizationRequest{
 		OrganizationName:        orgName,
 		OrganizationFullAddress: orgFullAddress,
@@ -96,6 +102,7 @@ func (s *SignupCli) SignupOrganization(
 		OrganizationState:       orgState,
 		OrganizationCountry:     orgCountry,
 		OrganizationZipCode:     orgZipCode,
+		OrganizationPhotoBase64: orgPhoto,
 		OwnerEmail:              ownerEmail,
 		OwnerName:               ownerName,
 		OwnerPassword:           ownerPassword,
@@ -109,9 +116,10 @@ func (s *SignupCli) SignupOrganization(
 		dErr := conversions.ToDerror(err)
 		log.Error().Str("err", dErr.Error()).Msg("cannot signup organization")
 		log.Error().Str("trace", conversions.ToDerror(err).DebugReport()).Msg("error")
-		os.Exit(1)
+		return derr
 	}
 	log.Info().Str("organizationID", response.OrganizationId).Msg("organization has been added")
+	return nil
 }
 
 func getTLSConfig(caPath string, clientCertPath string, clientKeyPath string) (credentials.TransportCredentials, derrors.Error) {
