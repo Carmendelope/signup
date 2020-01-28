@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Nalej
+ * Copyright 2020 Nalej
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,9 @@ func ValidOrganizationId(organizationID *grpc_organization_go.OrganizationId) de
 func ValidSignupOrganizationRequest(signupRequest *grpc_signup_go.SignupOrganizationRequest) derrors.Error {
 	if signupRequest.OrganizationName == "" {
 		return derrors.NewInvalidArgumentError("organization_name must be provided")
+	}
+	if signupRequest.OrganizationEmail == "" {
+		return derrors.NewInvalidArgumentError("organization_email must be provided")
 	}
 	if signupRequest.OrganizationFullAddress == "" {
 		return derrors.NewInvalidArgumentError("organization_full_address must be provided")
