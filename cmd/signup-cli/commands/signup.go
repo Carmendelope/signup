@@ -33,7 +33,7 @@ var signupCmd = &cobra.Command{
 			log.Fatal().Str("err", err.DebugReport()).Msg("cannot create CLI")
 			return
 		}
-		err = signupCli.SignupOrganization(orgName, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
+		err = signupCli.SignupOrganization(orgName, orgEmail, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
 			ownerEmail, ownerName, ownerPassword,
 			nalejAdminEmail, nalejAdminName, nalejAdminPassword)
 		if err != nil {
@@ -47,6 +47,8 @@ var signupCmd = &cobra.Command{
 func addOrgFlags() {
 	signupCmd.Flags().StringVar(&orgName, "orgName", "", "Name of the organization")
 	_ = signupCmd.MarkFlagRequired("orgName")
+	// TODO orgEmail, orgAddress, orgCity, orgState, orgCountry, and orgZipCode must be marked as required when generation scripts are updated
+	signupCmd.Flags().StringVar(&orgEmail, "orgEmail", "Unknown", "Email of the organization")
 	signupCmd.Flags().StringVar(&orgFullAddress, "orgAddress", "Unknown", "Organization full address")
 	signupCmd.Flags().StringVar(&orgCity, "orgCity", "Unknown", "Organization City")
 	signupCmd.Flags().StringVar(&orgState, "orgState", "Unknown", "Organization State")

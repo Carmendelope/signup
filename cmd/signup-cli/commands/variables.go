@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Nalej
+ * Copyright 2020 Nalej
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ var clientCertPath string
 var clientKeyPath string
 
 var orgName string
+var orgEmail string
 var orgFullAddress string
 var orgCity string
 var orgState string

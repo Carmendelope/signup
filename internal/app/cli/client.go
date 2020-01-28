@@ -84,7 +84,7 @@ func NewSignupCli(signupAddress string, caPath string, clientCertPath string, cl
 
 //SignupOrganization sends the request to create a new Organization based on the arguments given
 func (s *SignupCli) SignupOrganization(
-	orgName string, orgFullAddress string, orgCity string, orgState string, orgCountry string, orgZipCode string,
+	orgName string, orgEmail string, orgFullAddress string, orgCity string, orgState string, orgCountry string, orgZipCode string,
 	orgPhotoPath string,
 	ownerEmail string, ownerName string, ownerPassword string,
 	nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) derrors.Error {
@@ -97,6 +97,7 @@ func (s *SignupCli) SignupOrganization(
 	}
 	signupRequest := &grpc_signup_go.SignupOrganizationRequest{
 		OrganizationName:        orgName,
+		OrganizationEmail:       orgEmail,
 		OrganizationFullAddress: orgFullAddress,
 		OrganizationCity:        orgCity,
 		OrganizationState:       orgState,
@@ -167,7 +168,7 @@ func (s *SignupCli) PrintResultOrError(result interface{}, err error, errMsg str
 	if err != nil {
 		log.Fatal().Str("trace", conversions.ToDerror(err).DebugReport()).Msg(errMsg)
 	} else {
-		s.PrintResult(result)
+		_ = s.PrintResult(result)
 	}
 }
 
