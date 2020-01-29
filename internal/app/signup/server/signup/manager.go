@@ -130,6 +130,8 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 		Email:          signupRequest.NalejadminEmail,
 		Password:       signupRequest.NalejadminPassword,
 		Name:           signupRequest.NalejadminName,
+		LastName:       signupRequest.NalejadminLastName,
+		Title:          signupRequest.NalejadminTitle,
 		RoleId:         *nalejAdminRoleID,
 	}
 	err = addUser(err, m, addNalejAdminRequest, orgCreated)
@@ -143,6 +145,8 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 		Email:          signupRequest.OwnerEmail,
 		Password:       signupRequest.OwnerPassword,
 		Name:           signupRequest.OwnerName,
+		LastName:       signupRequest.OwnerLastName,
+		Title:          signupRequest.OwnerTitle,
 		RoleId:         *ownerRoleID,
 	}
 	err = addUser(err, m, addOwnerRequest, orgCreated)

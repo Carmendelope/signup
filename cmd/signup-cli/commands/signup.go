@@ -34,12 +34,18 @@ var signupCmd = &cobra.Command{
 			return
 		}
 		err = signupCli.SignupOrganization(orgName, orgEmail, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
-			ownerEmail, ownerName, ownerPassword,
-			nalejAdminEmail, nalejAdminName, nalejAdminPassword)
+			ownerEmail, ownerName, ownerLastName, ownerTitle, ownerPassword,
+			nalejAdminEmail, nalejAdminName, nalejAdminLastName, nalejAdminTitle, nalejAdminPassword)
 		if err != nil {
 			log.Fatal().Msg("signup failed")
 		}
 	},
+}
+
+func init() {
+	addOrgFlags()
+	addOwnerFlags()
+	addNalejAdminFlags()
 }
 
 // addOrgFlags adds the Organization fields as parameters for the command. Notice that default values are used
@@ -57,18 +63,30 @@ func addOrgFlags() {
 	signupCmd.Flags().StringVar(&orgPhotoPath, "orgPhotoPath", "", "Path of the organization photo/logo")
 }
 
-func init() {
-	addOrgFlags()
+// addOwnerFlags adds the Owner fields as parameters for the command. Notice that default values are used
+//// to avoid breaking calling scripts.
+func addOwnerFlags() {
+	// TODO ownerLastName and ownerTitle must be marked as required when generation scripts are updated
 	signupCmd.Flags().StringVar(&ownerEmail, "ownerEmail", "", "Email of the organization owner")
 	_ = signupCmd.MarkFlagRequired("ownerEmail")
 	signupCmd.Flags().StringVar(&ownerName, "ownerName", "", "Name the owner")
 	_ = signupCmd.MarkFlagRequired("ownerName")
+	signupCmd.Flags().StringVar(&ownerLastName, "ownerLastName", "Unknown", "Last name of the owner")
+	signupCmd.Flags().StringVar(&ownerTitle, "ownerTitle", "Unknown", "Title of the owner")
 	signupCmd.Flags().StringVar(&ownerPassword, "ownerPassword", "", "Password for the owner account")
 	_ = signupCmd.MarkFlagRequired("ownerPassword")
+}
+
+// addNalejAdminFlags adds the Nalej Admin fields as parameters for the command. Notice that default values are used
+//// to avoid breaking calling scripts.
+func addNalejAdminFlags() {
+	// TODO nalejAdminLastName and nalejAdminTitle must be marked as required when generation scripts are updated
 	signupCmd.Flags().StringVar(&nalejAdminEmail, "nalejAdminEmail", "", "Email of the Nalej administrator assigned to the organization")
 	_ = signupCmd.MarkFlagRequired("nalejAdminEmail")
-	signupCmd.Flags().StringVar(&nalejAdminName, "nalejAdminName", "", "Name the Nalej administrator")
+	signupCmd.Flags().StringVar(&nalejAdminName, "nalejAdminName", "", "Name of the Nalej administrator")
 	_ = signupCmd.MarkFlagRequired("nalejAdminName")
+	signupCmd.Flags().StringVar(&nalejAdminLastName, "nalejAdminLastName", "Unknown", "Last name of the Nalej administrator")
+	signupCmd.Flags().StringVar(&nalejAdminTitle, "nalejAdminTitle", "Unknown", "Title of the Nalej administrator")
 	signupCmd.Flags().StringVar(&nalejAdminPassword, "nalejAdminPassword", "", "Password for the Nalej administrator account")
 	_ = signupCmd.MarkFlagRequired("nalejAdminPassword")
 	rootCmd.AddCommand(signupCmd)

@@ -86,8 +86,8 @@ func NewSignupCli(signupAddress string, caPath string, clientCertPath string, cl
 func (s *SignupCli) SignupOrganization(
 	orgName string, orgEmail string, orgFullAddress string, orgCity string, orgState string, orgCountry string, orgZipCode string,
 	orgPhotoPath string,
-	ownerEmail string, ownerName string, ownerPassword string,
-	nalejAdminEmail string, nalejAdminName string, nalejAdminPassword string) derrors.Error {
+	ownerEmail string, ownerName string, ownerLastName string, ownerTitle string, ownerPassword string,
+	nalejAdminEmail string, nalejAdminName string, nalejAdminLastName string, nalejAdminTitle string, nalejAdminPassword string) derrors.Error {
 
 	orgPhoto, derr := PhotoPathToBase64(orgPhotoPath)
 	if derr != nil {
@@ -106,10 +106,14 @@ func (s *SignupCli) SignupOrganization(
 		OrganizationPhotoBase64: orgPhoto,
 		OwnerEmail:              ownerEmail,
 		OwnerName:               ownerName,
+		OwnerLastName:           ownerLastName,
+		OwnerTitle:              ownerTitle,
 		OwnerPassword:           ownerPassword,
 		PresharedSecret:         s.PresharedSecret,
 		NalejadminEmail:         nalejAdminEmail,
 		NalejadminName:          nalejAdminName,
+		NalejadminLastName:      nalejAdminLastName,
+		NalejadminTitle:         nalejAdminTitle,
 		NalejadminPassword:      nalejAdminPassword,
 	}
 	response, err := s.client.SignupOrganization(context.Background(), signupRequest)
