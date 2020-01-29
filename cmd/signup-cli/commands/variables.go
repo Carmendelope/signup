@@ -32,9 +32,13 @@ var orgPhotoPath string
 
 var ownerEmail string
 var ownerName string
+var ownerLastName string
+var ownerTitle string
 var ownerPassword string
 var nalejAdminEmail string
 var nalejAdminName string
+var nalejAdminLastName string
+var nalejAdminTitle string
 var nalejAdminPassword string
 var presharedSecret string
 
