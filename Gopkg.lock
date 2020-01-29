@@ -117,20 +117,20 @@
   version = "v0.0.31"
 
 [[projects]]
-  digest = "1:7e26a8f455c4e7978f049bd0c2e53f7f1195e15f66fe1ba9f11bd278105ef803"
+  digest = "1:e4d08c0d13382dba49921fc0d246b79134b49fb584b0fb711884aeba3250389b"
   name = "github.com/nalej/grpc-organization-go"
   packages = ["."]
   pruneopts = ""
-  revision = "db43aba4f994f9c1b4740ff1c6126c636d5f5dd0"
-  version = "v0.0.34"
+  revision = "ed59dc9b5531417b1fb89cadcda8bca82eaca0c7"
+  version = "v0.0.35"
 
 [[projects]]
-  digest = "1:e93099df7b2c493f8a4cb0ff1e0948b382348ab07850d72480a7ebe406ed8d09"
+  digest = "1:c120b1c6b702da878389466ef42aa580fc728e4bae814def6d59190757156194"
   name = "github.com/nalej/grpc-organization-manager-go"
   packages = ["."]
   pruneopts = ""
-  revision = "acf8c70e3c900214881f7189b89128da5d5f1e9c"
-  version = "v0.0.3"
+  revision = "b35d5814f6337b0170a2d9193ab4674a3472b2f3"
+  version = "v0.0.4"
 
 [[projects]]
   digest = "1:04665058968000b594204bad78216f04d1b575f8fefe558a4eeecc75964ebf62"
@@ -141,12 +141,12 @@
   version = "v0.0.3"
 
 [[projects]]
-  digest = "1:200a021656d3cccd56f6d456c3d5a37e717953bf77982c8f6c7934888496b24e"
+  digest = "1:9cf4042dab0393b9b59593300fcc3f6e6579d9c7bbb8836a290d04544bcb1648"
   name = "github.com/nalej/grpc-signup-go"
   packages = ["."]
   pruneopts = ""
-  revision = "0724dfccc48b9b8d2d9b66677ae4b1cae5c35c78"
-  version = "v0.0.25"
+  revision = "6f9b3766ca669248d31f7891d2e7d24099ef41c7"
+  version = "v0.0.26"
 
 [[projects]]
   digest = "1:c28ae2de3465b87c885623e72f1a3d8df64c2eac7dde5bd920d53e256e29ba52"
@@ -252,14 +252,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:715ccc4387c2678114966fdc2646be12a6cc700c7de2c5e5831ba8e62f8067bb"
+  digest = "1:01019562f95c0d81e26db6f1d145db1de6faefc80a8404d376ec34b33239191d"
   name = "google.golang.org/genproto"
   packages = [
     "googleapis/rpc/errdetails",
     "googleapis/rpc/status",
   ]
   pruneopts = ""
-  revision = "2548664c049f60b1d6488978017f539ec300e34d"
+  revision = "58ce757ed39bbbe3bf3960b90ded218031b35389"
 
 [[projects]]
   digest = "1:7af390490e636a6adc9c76b37a3c823195fbf375a02c4d9506b4dd49d5d2409a"

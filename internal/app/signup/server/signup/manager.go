@@ -89,6 +89,7 @@ func (m *Manager) SignupOrganization(signupRequest *grpc_signup_go.SignupOrganiz
 
 	addOrganizationRequest := &grpc_organization_go.AddOrganizationRequest{
 		Name:        signupRequest.OrganizationName,
+		Email:       signupRequest.OrganizationEmail,
 		FullAddress: signupRequest.OrganizationFullAddress,
 		City:        signupRequest.OrganizationCity,
 		State:       signupRequest.OrganizationState,
