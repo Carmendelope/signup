@@ -48,7 +48,7 @@
 
 [[constraint]]
     name="github.com/nalej/grpc-signup-go"
-    version="=v0.0.26"
+    version="=v0.0.27"
 
 [[constraint]]
     name="github.com/nalej/grpc-common-go"

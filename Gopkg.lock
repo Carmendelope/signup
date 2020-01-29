@@ -141,12 +141,12 @@
   version = "v0.0.3"
 
 [[projects]]
-  digest = "1:9cf4042dab0393b9b59593300fcc3f6e6579d9c7bbb8836a290d04544bcb1648"
+  digest = "1:b76da6668553ab27ab862e77c6ba30762eee4cfd874cc35c5ca4d869fbf05e92"
   name = "github.com/nalej/grpc-signup-go"
   packages = ["."]
   pruneopts = ""
-  revision = "6f9b3766ca669248d31f7891d2e7d24099ef41c7"
-  version = "v0.0.26"
+  revision = "21741a51165c8ec894fceddd66df86c64776ffa7"
+  version = "v0.0.27"
 
 [[projects]]
   digest = "1:c28ae2de3465b87c885623e72f1a3d8df64c2eac7dde5bd920d53e256e29ba52"
@@ -262,7 +262,7 @@
   revision = "58ce757ed39bbbe3bf3960b90ded218031b35389"
 
 [[projects]]
-  digest = "1:7af390490e636a6adc9c76b37a3c823195fbf375a02c4d9506b4dd49d5d2409a"
+  digest = "1:e89b808a6b6fbb2a11b753dd2382c7ec3bcb1a76fc646f6af42d4e7a93d0843b"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -305,8 +305,8 @@
     "tap",
   ]
   pruneopts = ""
-  revision = "f5b0812e6fe574d90da76b205e9eb51f6ddb1919"
-  version = "v1.26.0"
+  revision = "a89bee78ddf0f67f27c06b1b2b1b071c18408724"
+  version = "v1.27.0"
 
 [solve-meta]
   analyzer-name = "dep"
