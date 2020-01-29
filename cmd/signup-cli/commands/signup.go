@@ -34,8 +34,8 @@ var signupCmd = &cobra.Command{
 			return
 		}
 		err = signupCli.SignupOrganization(orgName, orgEmail, orgFullAddress, orgCity, orgState, orgCountry, orgZipCode, orgPhotoPath,
-			ownerEmail, ownerName, ownerPassword,
-			nalejAdminEmail, nalejAdminName, nalejAdminPassword)
+			ownerEmail, ownerName, ownerLastName, ownerTitle, ownerPassword,
+			nalejAdminEmail, nalejAdminName, nalejAdminLastName, nalejAdminTitle, nalejAdminPassword)
 		if err != nil {
 			log.Fatal().Msg("signup failed")
 		}
